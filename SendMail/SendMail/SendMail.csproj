@@ -126,6 +126,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
@@ -230,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="frmCampaign.aspx" />
     <Content Include="frmContact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -241,26 +243,26 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\SendMailModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SendMailModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\SendMailModel.edmx.diagram">
-      <DependentUpon>SendMailModel.edmx</DependentUpon>
-    </Content>
     <Content Include="client_secret_google_service.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Models\SendMailModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SendMailModel.edmx</DependentUpon>
-      <LastGenOutput>SendMailModel.Context.cs</LastGenOutput>
+    <EntityDeploy Include="Models\SendMail.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SendMail.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SendMail.edmx.diagram">
+      <DependentUpon>SendMail.edmx</DependentUpon>
     </Content>
-    <Content Include="Models\SendMailModel.tt">
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Models\SendMail.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SendMailModel.edmx</DependentUpon>
-      <LastGenOutput>SendMailModel.cs</LastGenOutput>
+      <DependentUpon>SendMail.edmx</DependentUpon>
+      <LastGenOutput>SendMail.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SendMail.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SendMail.edmx</DependentUpon>
+      <LastGenOutput>SendMail1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -325,6 +327,13 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="frmCampaign.aspx.cs">
+      <DependentUpon>frmCampaign.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmCampaign.aspx.designer.cs">
+      <DependentUpon>frmCampaign.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmContact.aspx.cs">
       <DependentUpon>frmContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -343,39 +352,36 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Campaign.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Contact.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Email.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailSend.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\SendMail.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SendMail.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SendMail.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SendMailModel.Context.cs">
+    <Compile Include="Models\SendMail.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SendMailModel.Context.tt</DependentUpon>
+      <DependentUpon>SendMail.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\SendMailModel.cs">
+    <Compile Include="Models\SendMail1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SendMailModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SendMailModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SendMailModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>SendMailModel.tt</DependentUpon>
+      <DependentUpon>SendMail.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="frmSendMail.aspx.cs">

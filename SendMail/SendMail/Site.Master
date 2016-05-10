@@ -50,11 +50,11 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/frmSendMail">Send Mail</a></li>
-                        <li><a runat="server" href="~/frmSendMailwithContents">Campaign</a></li>
-                        <li><a runat="server" href="~/frmContact">Contacts</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="~/">Trang chủ</a></li>
+                        <li><a runat="server" href="~/frmSendMail">Gửi một nội dung</a></li>
+                        <li><a runat="server" href="~/frmSendMailwithContents">Gửi nhiều nội dung</a></li>
+                        <li><a runat="server" href="~/frmContact">Danh bạ</a></li>
+                        <li><a runat="server" href="~/frmCampaign">Chiến dịch</a></li>
                     </ul>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>

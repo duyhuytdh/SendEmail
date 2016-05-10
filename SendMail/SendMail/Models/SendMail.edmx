@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SendMailModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="SendMailModelStoreContainer">
+          <EntitySet Name="Campaign" EntityType="SendMailModel.Store.Campaign" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Contact" EntityType="SendMailModel.Store.Contact" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Email" EntityType="SendMailModel.Store.Email" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SendMail" EntityType="SendMailModel.Store.SendMail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="SendMailModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_SendMail_Contact" Association="SendMailModel.Store.FK_SendMail_Contact">
+            <End Role="Contact" EntitySet="Contact" />
+            <End Role="SendMail" EntitySet="SendMail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SendMail_User" Association="SendMailModel.Store.FK_SendMail_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SendMail" EntitySet="SendMail" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="CampaignID" />
+          </Key>
+          <Property Name="CampaignID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignName" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeBegin" Type="date" />
+          <Property Name="TimeEnd" Type="date" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="TimeSend" Type="time" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Birthday" Type="date" />
+        </EntityType>
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="EmailID" />
+          </Key>
+          <Property Name="EmailID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SendMailID" Type="bigint" />
+          <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="ContentEmail" Type="text" Nullable="false" />
+          <Property Name="CampaignID" Type="bigint" />
+        </EntityType>
+        <EntityType Name="SendMail">
+          <Key>
+            <PropertyRef Name="SendMailID" />
+          </Key>
+          <Property Name="SendMailID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ContactID" Type="bigint" Nullable="false" />
+          <Property Name="TimeSend" Type="datetime" Nullable="false" />
+          <Property Name="StatusSend" Type="bit" Nullable="false" />
+          <Property Name="EmailUsed" Type="nvarchar" MaxLength="50" />
+          <Property Name="TypeServiceUsed" Type="nvarchar" MaxLength="20" />
+          <Property Name="Note" Type="nvarchar" MaxLength="50" />
+          <Property Name="CampaignID" Type="bigint" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="AccountName" Type="varbinary" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varbinary" Nullable="false" MaxLength="50" />
+          <Property Name="Phone" Type="varbinary" MaxLength="15" />
+          <Property Name="TimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="isAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_SendMail_Contact">
+          <End Role="Contact" Type="SendMailModel.Store.Contact" Multiplicity="1" />
+          <End Role="SendMail" Type="SendMailModel.Store.SendMail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="ContactID" />
+            </Principal>
+            <Dependent Role="SendMail">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SendMail_User">
+          <End Role="User" Type="SendMailModel.Store.User" Multiplicity="1" />
+          <End Role="SendMail" Type="SendMailModel.Store.SendMail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SendMail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SendMailModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SendMailEntities1" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Campaigns" EntityType="SendMailModel.Campaign" />
+          <EntitySet Name="Contacts" EntityType="SendMailModel.Contact" />
+          <EntitySet Name="Emails" EntityType="SendMailModel.Email" />
+          <EntitySet Name="SendMails" EntityType="SendMailModel.SendMail" />
+          <EntitySet Name="Users" EntityType="SendMailModel.User" />
+          <AssociationSet Name="FK_SendMail_Contact" Association="SendMailModel.FK_SendMail_Contact">
+            <End Role="Contact" EntitySet="Contacts" />
+            <End Role="SendMail" EntitySet="SendMails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SendMail_User" Association="SendMailModel.FK_SendMail_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SendMail" EntitySet="SendMails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="CampaignID" />
+          </Key>
+          <Property Name="CampaignID" Type="Int64" Nullable="false" />
+          <Property Name="CampaignName" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="TimeBegin" Type="DateTime" Precision="0" />
+          <Property Name="TimeEnd" Type="DateTime" Precision="0" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="TimeSend" Type="Time" Precision="7" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="Adress" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="SendMails" Relationship="SendMailModel.FK_SendMail_Contact" FromRole="Contact" ToRole="SendMail" />
+        </EntityType>
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="EmailID" />
+          </Key>
+          <Property Name="EmailID" Type="Int64" Nullable="false" />
+          <Property Name="SendMailID" Type="Int64" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="ContentEmail" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="CampaignID" Type="Int64" />
+        </EntityType>
+        <EntityType Name="SendMail">
+          <Key>
+            <PropertyRef Name="SendMailID" />
+          </Key>
+          <Property Name="SendMailID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="ContactID" Type="Int64" Nullable="false" />
+          <Property Name="TimeSend" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StatusSend" Type="Boolean" Nullable="false" />
+          <Property Name="EmailUsed" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="TypeServiceUsed" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Note" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CampaignID" Type="Int64" />
+          <NavigationProperty Name="Contact" Relationship="SendMailModel.FK_SendMail_Contact" FromRole="SendMail" ToRole="Contact" />
+          <NavigationProperty Name="User" Relationship="SendMailModel.FK_SendMail_User" FromRole="SendMail" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AccountName" Type="Binary" Nullable="false" MaxLength="50" FixedLength="false" />
+          <Property Name="Password" Type="Binary" Nullable="false" MaxLength="50" FixedLength="false" />
+          <Property Name="Phone" Type="Binary" MaxLength="15" FixedLength="false" />
+          <Property Name="TimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SendMails" Relationship="SendMailModel.FK_SendMail_User" FromRole="User" ToRole="SendMail" />
+        </EntityType>
+        <Association Name="FK_SendMail_Contact">
+          <End Role="Contact" Type="SendMailModel.Contact" Multiplicity="1" />
+          <End Role="SendMail" Type="SendMailModel.SendMail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="ContactID" />
+            </Principal>
+            <Dependent Role="SendMail">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SendMail_User">
+          <End Role="User" Type="SendMailModel.User" Multiplicity="1" />
+          <End Role="SendMail" Type="SendMailModel.SendMail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="SendMail">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SendMailModelStoreContainer" CdmEntityContainer="SendMailEntities1">
+          <EntitySetMapping Name="Campaigns">
+            <EntityTypeMapping TypeName="SendMailModel.Campaign">
+              <MappingFragment StoreEntitySet="Campaign">
+                <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
+                <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+                <ScalarProperty Name="TimeBegin" ColumnName="TimeBegin" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="TimeSend" ColumnName="TimeSend" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="SendMailModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emails">
+            <EntityTypeMapping TypeName="SendMailModel.Email">
+              <MappingFragment StoreEntitySet="Email">
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="SendMailID" ColumnName="SendMailID" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ContentEmail" ColumnName="ContentEmail" />
+                <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SendMails">
+            <EntityTypeMapping TypeName="SendMailModel.SendMail">
+              <MappingFragment StoreEntitySet="SendMail">
+                <ScalarProperty Name="SendMailID" ColumnName="SendMailID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="TimeSend" ColumnName="TimeSend" />
+                <ScalarProperty Name="StatusSend" ColumnName="StatusSend" />
+                <ScalarProperty Name="EmailUsed" ColumnName="EmailUsed" />
+                <ScalarProperty Name="TypeServiceUsed" ColumnName="TypeServiceUsed" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SendMailModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
+                <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
