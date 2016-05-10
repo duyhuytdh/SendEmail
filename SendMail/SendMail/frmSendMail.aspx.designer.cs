@@ -10,7 +10,7 @@
 namespace SendMail {
     
     
-    public partial class SendMailwithContents {
+    public partial class frmSendMail {
         
         /// <summary>
         /// radio_service_google control.
@@ -49,6 +49,15 @@ namespace SendMail {
         protected global::System.Web.UI.HtmlControls.HtmlInputPassword ip_txt_pass_email;
         
         /// <summary>
+        /// ip_txt_to_email control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText ip_txt_to_email;
+        
+        /// <summary>
         /// FileUpload1 control.
         /// </summary>
         /// <remarks>
@@ -85,6 +94,33 @@ namespace SendMail {
         protected global::System.Web.UI.WebControls.Button btnImportList;
         
         /// <summary>
+        /// ip_txt_subject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText ip_txt_subject;
+        
+        /// <summary>
+        /// txt_content_mail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txt_content_mail;
+        
+        /// <summary>
+        /// btnSendMail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSendMail;
+        
+        /// <summary>
         /// btnSendListMail control.
         /// </summary>
         /// <remarks>
@@ -94,12 +130,30 @@ namespace SendMail {
         protected global::System.Web.UI.WebControls.Button btnSendListMail;
         
         /// <summary>
-        /// gridView control.
+        /// progressBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView gridView;
+        protected global::DevExpress.Web.ASPxProgressBar progressBar;
+        
+        /// <summary>
+        /// checkBoxSelectAll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBox checkBoxSelectAll;
+        
+        /// <summary>
+        /// checkBoxListEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBoxList checkBoxListEmail;
     }
 }

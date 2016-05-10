@@ -11,7 +11,7 @@ using DevExpress.Web;
 
 namespace SendMail
 {
-    public partial class SendMailwithContents : System.Web.UI.Page
+    public partial class frmSendMailwithContents : System.Web.UI.Page
     {
         #region Data Member
         CreateMail createEmail;

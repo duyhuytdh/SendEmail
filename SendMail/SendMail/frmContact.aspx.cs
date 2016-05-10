@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace SendMail
 {
-    public partial class Contact : Page
+    public partial class frmContact : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
