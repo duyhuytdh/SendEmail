@@ -246,23 +246,23 @@
     <Content Include="client_secret_google_service.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\SendMail.edmx">
+    <EntityDeploy Include="Models\SendMailModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SendMail.Designer.cs</LastGenOutput>
+      <LastGenOutput>SendMailModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\SendMail.edmx.diagram">
-      <DependentUpon>SendMail.edmx</DependentUpon>
+    <Content Include="Models\SendMailModel.edmx.diagram">
+      <DependentUpon>SendMailModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Models\SendMail.Context.tt">
+    <Content Include="Models\SendMailModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SendMail.edmx</DependentUpon>
-      <LastGenOutput>SendMail.Context.cs</LastGenOutput>
+      <DependentUpon>SendMailModel.edmx</DependentUpon>
+      <LastGenOutput>SendMailModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\SendMail.tt">
+    <Content Include="Models\SendMailModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SendMail.edmx</DependentUpon>
-      <LastGenOutput>SendMail1.cs</LastGenOutput>
+      <DependentUpon>SendMailModel.edmx</DependentUpon>
+      <LastGenOutput>SendMailModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -352,36 +352,39 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Campaign.cs">
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Contact.cs">
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Email.cs">
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailSend.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\SendMail.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SendMail.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SendMail.cs">
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SendMail.Designer.cs">
+    <Compile Include="Models\SendMailModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SendMail.edmx</DependentUpon>
+      <DependentUpon>SendMailModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SendMail1.cs">
+    <Compile Include="Models\SendMailModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SendMailModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SendMailModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TempSendEmail.cs">
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>SendMail.tt</DependentUpon>
+      <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="frmSendMail.aspx.cs">

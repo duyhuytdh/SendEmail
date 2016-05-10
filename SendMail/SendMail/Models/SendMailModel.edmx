@@ -10,6 +10,7 @@
           <EntitySet Name="Contact" EntityType="SendMailModel.Store.Contact" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Email" EntityType="SendMailModel.Store.Email" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SendMail" EntityType="SendMailModel.Store.SendMail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TempSendEmails" EntityType="SendMailModel.Store.TempSendEmails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="SendMailModel.Store.User" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_SendMail_Contact" Association="SendMailModel.Store.FK_SendMail_Contact">
             <End Role="Contact" EntitySet="Contact" />
@@ -70,6 +71,16 @@
           <Property Name="Note" Type="nvarchar" MaxLength="50" />
           <Property Name="CampaignID" Type="bigint" />
         </EntityType>
+        <EntityType Name="TempSendEmails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="STT" Type="bigint" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="500" />
+          <Property Name="ContentEmail" Type="text" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -110,7 +121,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SendMailModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="SendMailEntities1" p1:LazyLoadingEnabled="true">
+        <EntityContainer Name="SendMailEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Campaigns" EntityType="SendMailModel.Campaign" />
           <EntitySet Name="Contacts" EntityType="SendMailModel.Contact" />
           <EntitySet Name="Emails" EntityType="SendMailModel.Email" />
@@ -124,12 +135,13 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SendMail" EntitySet="SendMails" />
           </AssociationSet>
+          <EntitySet Name="TempSendEmails" EntityType="SendMailModel.TempSendEmail" />
         </EntityContainer>
         <EntityType Name="Campaign">
           <Key>
             <PropertyRef Name="CampaignID" />
           </Key>
-          <Property Name="CampaignID" Type="Int64" Nullable="false" />
+          <Property Name="CampaignID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="CampaignName" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
           <Property Name="TimeBegin" Type="DateTime" Precision="0" />
           <Property Name="TimeEnd" Type="DateTime" Precision="0" />
@@ -156,7 +168,7 @@
           <Key>
             <PropertyRef Name="EmailID" />
           </Key>
-          <Property Name="EmailID" Type="Int64" Nullable="false" />
+          <Property Name="EmailID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="SendMailID" Type="Int64" />
           <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
           <Property Name="ContentEmail" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
@@ -215,12 +227,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TempSendEmail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="STT" />
+          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContentEmail" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SendMailModelStoreContainer" CdmEntityContainer="SendMailEntities1">
+        <EntityContainerMapping StorageEntityContainer="SendMailModelStoreContainer" CdmEntityContainer="SendMailEntities">
           <EntitySetMapping Name="Campaigns">
             <EntityTypeMapping TypeName="SendMailModel.Campaign">
               <MappingFragment StoreEntitySet="Campaign">
@@ -285,6 +307,17 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
                 <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TempSendEmails">
+            <EntityTypeMapping TypeName="SendMailModel.TempSendEmail">
+              <MappingFragment StoreEntitySet="TempSendEmails">
+                <ScalarProperty Name="ContentEmail" ColumnName="ContentEmail" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="STT" ColumnName="STT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

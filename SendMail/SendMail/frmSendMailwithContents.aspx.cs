@@ -8,6 +8,8 @@ using SendMail.ServiceMail;
 using SendMail.Util;
 using System.Data;
 using DevExpress.Web;
+using SendMail.Models;
+using System.Collections.Generic;
 
 namespace SendMail
 {
@@ -18,17 +20,18 @@ namespace SendMail
         #endregion
 
         #region Data structure
-        private static class DataField {
+        private static class DataField
+        {
             public const string Email = "Email";
             public const string Subject = "Subject";
-            public const string Content = "Content";
+            public const string Content = "ContentEmail";
         }
         #endregion
 
         #region Private Method
         #endregion
 
-        #region Publuec Method
+        #region Public Method
         #endregion
 
         #region Event
@@ -52,6 +55,7 @@ namespace SendMail
                     txtNameFileUpload.Text = FileName;
                     string FilePath = Server.MapPath(FolderPath + FileName);
                     FileUpload1.SaveAs(FilePath);
+
                 }
                 else
                 {
@@ -70,16 +74,39 @@ namespace SendMail
         {
             try
             {
+
+                SendMailEntities db = new SendMailEntities();
+             
+                List<TempSendEmail> listTemp = new List<TempSendEmail>();
+
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
                 string FileName = txtNameFileUpload.Text;
                 string Extension = Path.GetExtension(FileName);
                 string FilePath = Server.MapPath(FolderPath + FileName);
+                if (FileName != "")
+                {
+                    db.Database.ExecuteSqlCommand("TRUNCATE TABLE TempSendEmails");
+                    DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        TempSendEmail temp = new TempSendEmail();
+                        temp.STT = Int64.Parse(dr["STT"].ToString());
+                        temp.Subject = dr["Subject"].ToString();
+                        temp.ContentEmail = dr["Content"].ToString();
+                        temp.Email = dr["Email"].ToString();
+                        listTemp.Add(temp);
+                    }
 
-                DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
+                    db.TempSendEmails.AddRange(listTemp);
+                    db.SaveChanges();
 
-                gridView.DataSource = dt;
-                gridView.DataBind();
-
+                    gridView.DataBind();
+                }
+                else
+                {
+                    String message = "Bạn chưa chọn file hoặc file này đang được mở!";
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + message + "');", true);
+                }
             }
             catch (Exception v_e)
             {
@@ -95,10 +122,10 @@ namespace SendMail
                 EmailSend email = new EmailSend();
                 email.fromEmail = ip_txt_from_email.Value;
                 email.passWordSendMail = ip_txt_pass_email.Value;
-         
+
                 if (radio_service_google.Checked)
                 {
-          
+
                 }
                 else if (radio_service_stpm.Checked)
                 {
@@ -106,7 +133,7 @@ namespace SendMail
                     {
                         if (gridView.GetRowLevel(i) == gridView.GroupCount)
                         {
-                            object keyValue = gridView.GetRowValues(i, new string[] {DataField.Email,DataField.Subject, DataField.Content });
+                            object keyValue = gridView.GetRowValues(i, new string[] { DataField.Email, DataField.Subject, DataField.Content });
                             if (keyValue != null)
                             {
                                 Array arr = (Array)keyValue;
