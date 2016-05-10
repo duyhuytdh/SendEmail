@@ -40,6 +40,10 @@ namespace SendMail
             createEmail = new CreateMail();
             GoogleMailService.initService();
             radio_service_stpm.Checked = true;
+
+            cmbCampaign.DataBind();
+            cmbCampaign.Items.Insert(0,new ListEditItem("None"));
+            cmbCampaign.SelectedIndex = 0;
         }
 
 
@@ -158,6 +162,19 @@ namespace SendMail
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
                 Debugger.Log(1, "Send Mail", "Failed: " + v_e);
+            }
+        }
+
+        protected void btnSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
         }
 

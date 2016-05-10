@@ -31,6 +31,24 @@ namespace SendMail {
         protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton radio_service_stpm;
         
         /// <summary>
+        /// cmbCampaign control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxComboBox cmbCampaign;
+        
+        /// <summary>
+        /// CampaignDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource CampaignDataSource;
+        
+        /// <summary>
         /// ip_txt_from_email control.
         /// </summary>
         /// <remarks>
@@ -92,6 +110,24 @@ namespace SendMail {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSendListMail;
+        
+        /// <summary>
+        /// txt_date_schedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_date_schedule;
+        
+        /// <summary>
+        /// btnSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSchedule;
         
         /// <summary>
         /// gridView control.
