@@ -92,6 +92,7 @@ namespace SendMail
                 string FilePath = Server.MapPath(FolderPath + FileName);
                 if (FileName != "")
                 {
+                    //delete data in table temporary
                     db.Database.ExecuteSqlCommand("TRUNCATE TABLE TempSendEmails");
                     DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
                     foreach (DataRow dr in dt.Rows)
@@ -132,7 +133,7 @@ namespace SendMail
 
                 if (radio_service_google.Checked)
                 {
-
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Hiện chưa hỗ trợ service này!" + "');", true);
                 }
                 else if (radio_service_stpm.Checked)
                 {

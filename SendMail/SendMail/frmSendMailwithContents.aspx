@@ -63,12 +63,9 @@
             });
         });
         $(function () {
-            if ($("#<%=txt_date_schedule.ClientID %>").text != "")
-            {
                 var newYear = new Date()
                 newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
                 $('#defaultCountdown').countdown({ until: newYear });
-            }
         });
     </script>
 
@@ -117,7 +114,7 @@
         <div style="display: inline-block; float: left; margin: 10px">
             <asp:Button ID="btnSendListMail" class="btn btn-success" runat="server" Text="Gửi email ngay" OnClick="btnSendListMail_Click" />
             <span style="margin-left: 15px">Đặt lịch gửi:</span>
-            <asp:TextBox ID="txt_date_schedule" runat="server" ReadOnly="false"></asp:TextBox>
+            <asp:TextBox ID="txt_date_schedule" runat="server" ReadOnly="true" placeholder="Chọn thời điểm gửi"></asp:TextBox>
         </div>
         <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success" runat="server" Text="Bắt đầu" OnClick="btnSchedule_Click" />
         <div id="defaultCountdown"></div>
