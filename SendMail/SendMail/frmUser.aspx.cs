@@ -14,5 +14,22 @@ namespace SendMail
         {
             
         }
+
+        protected void gridView_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
+        {
+            e.NewValues["Password"] = Util.Cryption.Encrypt(e.NewValues["Password"].ToString());
+            e.NewValues["TimeCreated"] = DateTime.Now;
+        }
+
+        protected void gridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+        {
+            e.NewValues["Password"] = Util.Cryption.Encrypt(e.NewValues["Password"].ToString());
+            e.OldValues["Password"] = Util.Cryption.Decrypt(e.OldValues["Password"].ToString());
+        }
+
+        protected void gridView_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)
+        {
+            
+        }
     }
 }
