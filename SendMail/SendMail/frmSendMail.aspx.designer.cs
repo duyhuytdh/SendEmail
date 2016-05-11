@@ -139,13 +139,13 @@ namespace SendMail {
         protected global::DevExpress.Web.ASPxProgressBar progressBar;
         
         /// <summary>
-        /// checkBoxSelectAll control.
+        /// ASPxCheckBox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBox checkBoxSelectAll;
+        protected global::DevExpress.Web.ASPxCheckBox ASPxCheckBox1;
         
         /// <summary>
         /// checkBoxListEmail control.

@@ -110,7 +110,7 @@ namespace SendMail
                 checkBoxListEmail.TextField = "Email";
                 checkBoxListEmail.DataBind();
                 checkBoxListEmail.SelectAll();
-                checkBoxSelectAll.Checked = true;
+                //checkBoxSelectAll.Checked = true;
             }
             catch (Exception v_e)
             {
@@ -169,14 +169,14 @@ namespace SendMail
         {
             try
             {
-                if (checkBoxSelectAll.Checked == true)
-                {
-                    checkBoxListEmail.SelectAll();
-                }
-                else
-                {
-                    checkBoxListEmail.UnselectAll();
-                }
+                //if (checkBoxSelectAll.Checked == true)
+                //{
+                //    checkBoxListEmail.SelectAll();
+                //}
+                //else
+                //{
+                //    checkBoxListEmail.UnselectAll();
+                //}
 
             }
             catch (Exception v_e)

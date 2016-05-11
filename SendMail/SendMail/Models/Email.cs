@@ -15,9 +15,8 @@ namespace SendMail.Models
     public partial class Email
     {
         public long EmailID { get; set; }
-        public Nullable<long> SendMailID { get; set; }
         public string Subject { get; set; }
         public string ContentEmail { get; set; }
-        public Nullable<long> CampaignID { get; set; }
+        public string Desciption { get; set; }
     }
 }

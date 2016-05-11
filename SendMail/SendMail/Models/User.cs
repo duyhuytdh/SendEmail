@@ -20,10 +20,8 @@ namespace SendMail.Models
         }
     
         public long UserID { get; set; }
-        public string Email { get; set; }
-        public byte[] AccountName { get; set; }
-        public byte[] Password { get; set; }
-        public byte[] Phone { get; set; }
+        public string AccountName { get; set; }
+        public string Password { get; set; }
         public System.DateTime TimeCreated { get; set; }
         public bool isAdmin { get; set; }
     

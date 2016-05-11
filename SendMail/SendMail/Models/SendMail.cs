@@ -23,6 +23,7 @@ namespace SendMail.Models
         public string TypeServiceUsed { get; set; }
         public string Note { get; set; }
         public Nullable<long> CampaignID { get; set; }
+        public long EmailID { get; set; }
     
         public virtual Contact Contact { get; set; }
         public virtual User User { get; set; }

@@ -59,6 +59,20 @@
         }
     </style>
 
+    <script type="text/javascript">
+        function OnCbAllCheckedChanged(s, e) {
+            if (s.GetChecked()) {
+                checkBoxListEmail.SelectAll();
+            } else
+                checkBoxListEmail.UnselectAll();
+        }
+
+        function cbList_SelectedIndexChanged(s, e) {
+            var selectedItemsCount = s.GetSelectedItems().length;
+            cbAll.SetChecked(selectedItemsCount == s.GetItemCount());
+        }
+    </script>
+
     <div id="content" style="width: 1200px !important; display: inline-block; float: right;">
         <div id="content_send_mail" style="width: 900px !important; float: left">
             <div id="group_radio_select_service">
@@ -105,12 +119,15 @@
             <div>
                 <label style="font-size: 12pt; font-weight: bold; margin-left: 10px;">Danh sách Email Import</label>
                 <br />
-                <dx:ASPxCheckBox ID="checkBoxSelectAll" runat="server" Text="Select all" CssClass="checkboxSelectAll" EnableViewState="true" OnCheckedChanged="CheckedChanged">
+                <dx:ASPxCheckBox ID="ASPxCheckBox1" runat="server" Text="Select All" ClientInstanceName="cbAll" CheckState="Unchecked">
+                    <ClientSideEvents CheckedChanged="OnCbAllCheckedChanged" />
                 </dx:ASPxCheckBox>
                 <br />
                 <%--<asp:ListBox ID="listBoxEmail" runat="server" CssClass="listBoxEmail" class="list-group"></asp:ListBox>--%>
                 <div id="ct_listCheckBoxEmail">
-                    <dx:ASPxCheckBoxList Border-BorderStyle="None" ID="checkBoxListEmail" runat="server" RepeatColumns="1" RepeatLayout="Table"></dx:ASPxCheckBoxList>
+                    <dx:ASPxCheckBoxList Border-BorderStyle="None" ID="checkBoxListEmail" runat="server" RepeatColumns="1" RepeatLayout="Table">
+                        <ClientSideEvents SelectedIndexChanged="cbList_SelectedIndexChanged" />
+                    </dx:ASPxCheckBoxList>
                 </div>
             </div>
         </div>

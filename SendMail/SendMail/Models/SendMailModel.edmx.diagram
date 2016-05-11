@@ -5,14 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="622a2e2c20cc496e997c6fbcba309276" Name="Diagram1">
-        <EntityTypeShape EntityType="SendMailModel.Campaign" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SendMailModel.Contact" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SendMailModel.Email" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SendMailModel.SendMail" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SendMailModel.User" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <AssociationConnector Association="SendMailModel.FK_SendMail_Contact" ManuallyRouted="false" />
-        <AssociationConnector Association="SendMailModel.FK_SendMail_User" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SendMailModel.TempSendEmail" Width="1.5" PointX="5" PointY="5.5" />
+        <EntityTypeShape EntityType="SendMailModel.Campaign" Width="1.5" PointX="7.212916623434479" PointY="10.904921074819249" />
+        <EntityTypeShape EntityType="SendMailModel.Contact" Width="1.5" PointX="4.3538030257233435" PointY="30.556188836021438" />
+        <EntityTypeShape EntityType="SendMailModel.Email" Width="1.5" PointX="2.4691311523640209" PointY="17.443561875002256" />
+        <EntityTypeShape EntityType="SendMailModel.SendMail" Width="1.5" PointX="10.544029304079725" PointY="10.342686583447589" />
+        <EntityTypeShape EntityType="SendMailModel.TempSendEmail" Width="1.5" PointX="2.8885652976522991" PointY="11.712066372722418" />
+        <EntityTypeShape EntityType="SendMailModel.User" Width="1.5" PointX="6.4034747138635613" PointY="20.469281623358505" />
+        <AssociationConnector Association="SendMailModel.FK_SendMail_Contact" />
+        <AssociationConnector Association="SendMailModel.FK_SendMail_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
