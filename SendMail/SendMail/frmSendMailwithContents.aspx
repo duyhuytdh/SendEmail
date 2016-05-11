@@ -36,19 +36,24 @@
         }
 
         .btnSchedule {
-            margin:10px 0 0 78px;
+            margin: 10px 0 0 78px;
         }
+        #defaultCountdown { width: 240px; height: 50px; float:right; margin-right:150px;}
     </style>
     <script src="Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery.dynDateTime.min.js" type="text/javascript"></script>
     <script src="Scripts/calendar-en.min.js" type="text/javascript"></script>
     <link href="Styles/calendar-blue.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" type="text/css" href="Styles/jquery.countdown.css">
+    <script type="text/javascript" src="Scripts/jquery.plugin.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.countdown.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#<%=txt_date_schedule.ClientID %>").dynDateTime({
                 showsTime: true,
-                ifFormat: "%d/%m/%M %H:%M",
+                ifFormat: "%d/%m/%Y %H:%M",
                 daFormat: "%l;%M %p, %e %m, %Y",
                 align: "BC",
                 electric: false,
@@ -56,6 +61,14 @@
                 displayArea: ".siblings('.dtcDisplayArea')",
                 button: ".next()"
             });
+        });
+        $(function () {
+            if ($("#<%=txt_date_schedule.ClientID %>").text != "")
+            {
+                var newYear = new Date()
+                newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
+                $('#defaultCountdown').countdown({ until: newYear });
+            }
         });
     </script>
 
@@ -102,11 +115,12 @@
         </div>
 
         <div style="display: inline-block; float: left; margin: 10px">
-            <asp:Button ID="btnSendListMail" class="btn btn-success" runat="server" Text="Gửi theo danh sách" OnClick="btnSendListMail_Click" />
+            <asp:Button ID="btnSendListMail" class="btn btn-success" runat="server" Text="Gửi email ngay" OnClick="btnSendListMail_Click" />
             <span style="margin-left: 15px">Đặt lịch gửi:</span>
             <asp:TextBox ID="txt_date_schedule" runat="server" ReadOnly="false"></asp:TextBox>
         </div>
-        <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success" runat="server" Text="Đặt lịch" OnClick="btnSchedule_Click" />
+        <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success" runat="server" Text="Bắt đầu" OnClick="btnSchedule_Click" />
+        <div id="defaultCountdown"></div>
 
 
         <div class="gridView">

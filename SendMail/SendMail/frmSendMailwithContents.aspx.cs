@@ -10,6 +10,9 @@ using System.Data;
 using DevExpress.Web;
 using SendMail.Models;
 using System.Collections.Generic;
+using Quartz;
+using Quartz.Impl;
+
 
 namespace SendMail
 {
@@ -169,7 +172,31 @@ namespace SendMail
         {
             try
             {
+                DateTime date = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
 
+                // Grab the Scheduler instance from the Factory 
+                IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+
+                // and start it off
+                scheduler.Start();
+
+                // define the job and tie it to our HelloJob class
+                IJobDetail job = JobBuilder.Create<HelloJob>()
+                    .WithIdentity("job1", "group1")
+                    .Build();
+
+                // trigger builder creates simple trigger by default, actually an ITrigger is returned
+                ISimpleTrigger trigger = (ISimpleTrigger) TriggerBuilder.Create()
+                .WithIdentity("trigger1", "group1")
+                .StartAt(date) // some Date 
+                .ForJob("job1", "group1") // identify job with name, group strings
+                .Build();
+
+                // Tell quartz to schedule the job using our trigger
+                scheduler.ScheduleJob(job, trigger);
+
+                // and last shut down the scheduler when you are ready to close your program
+                //scheduler.Shutdown();
             }
             catch (Exception)
             {
@@ -188,6 +215,14 @@ namespace SendMail
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
                 Debugger.Log(1, "Send Mail", "Failed: " + v_e);
+            }
+        }
+
+        public class HelloJob : IJob
+        {
+            public void Execute(IJobExecutionContext context)
+            {
+                Console.WriteLine("Greetings from HelloJob!");               
             }
         }
 
