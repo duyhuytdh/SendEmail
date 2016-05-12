@@ -8,6 +8,7 @@ using SendMail.ServiceMail;
 using SendMail.Util;
 using System.Data;
 using DevExpress.Web;
+using System.Web.Security;
 
 namespace SendMail
 {
@@ -27,9 +28,16 @@ namespace SendMail
         #region Event
         protected void Page_Load(object sender, EventArgs e)
         {
-            createEmail = new CreateMail();
-            GoogleMailService.initService();
-            radio_service_stpm.Checked = true;
+            if (!this.Page.User.Identity.IsAuthenticated)
+            {
+                FormsAuthentication.RedirectToLoginPage();
+            }
+            else
+            {
+                createEmail = new CreateMail();
+                GoogleMailService.initService();
+                radio_service_stpm.Checked = true;
+            }
         }
 
         protected void btnSendMail_Click(object sender, EventArgs e)

@@ -242,6 +242,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="frmLogin.aspx" />
     <Content Include="frmUser.aspx" />
     <Content Include="frmCampaign.aspx" />
     <Content Include="frmContact.aspx" />
@@ -338,6 +339,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="frmLogin.aspx.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLogin.aspx.designer.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmUser.aspx.cs">
       <DependentUpon>frmUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

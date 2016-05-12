@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Quartz;
 using Quartz.Impl;
 using System.Web.UI;
+using System.Web.Security;
 
 namespace SendMail
 {
@@ -36,7 +37,10 @@ namespace SendMail
 
         protected void Page_Load(object sender, EventArgs e)
         {
-  
+            if (!this.Page.User.Identity.IsAuthenticated)
+            {
+                FormsAuthentication.RedirectToLoginPage();
+            }
         }
 
 

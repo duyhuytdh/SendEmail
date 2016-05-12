@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SendMail.Models;
+using System.Web.Security;
 
 namespace SendMail
 {
@@ -13,7 +14,10 @@ namespace SendMail
         #region Event
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!this.Page.User.Identity.IsAuthenticated)
+            {
+                FormsAuthentication.RedirectToLoginPage();
+            }
         }
 
         private void loadDatatoGrid()
