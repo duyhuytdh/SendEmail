@@ -9,7 +9,9 @@
           <EntitySet Name="Campaign" EntityType="SendMailModel.Store.Campaign" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Contact" EntityType="SendMailModel.Store.Contact" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Email" EntityType="SendMailModel.Store.Email" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailOwn" EntityType="SendMailModel.Store.EmailOwn" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SendMail" EntityType="SendMailModel.Store.SendMail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TempScheduleSendEmails" EntityType="SendMailModel.Store.TempScheduleSendEmails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TempSendEmails" EntityType="SendMailModel.Store.TempSendEmails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="SendMailModel.Store.User" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_SendMail_Contact" Association="SendMailModel.Store.FK_SendMail_Contact">
@@ -56,6 +58,16 @@
           <Property Name="ContentEmail" Type="text" Nullable="false" />
           <Property Name="Desciption" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="EmailOwn">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="SendMail">
           <Key>
             <PropertyRef Name="SendMailID" />
@@ -70,6 +82,16 @@
           <Property Name="Note" Type="nvarchar" MaxLength="50" />
           <Property Name="CampaignID" Type="bigint" />
           <Property Name="EmailID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TempScheduleSendEmails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="STT" Type="bigint" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="500" />
+          <Property Name="ContentEmail" Type="text" />
         </EntityType>
         <EntityType Name="TempSendEmails">
           <Key>
@@ -90,6 +112,7 @@
           <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="TimeCreated" Type="datetime" Nullable="false" />
           <Property Name="isAdmin" Type="bit" Nullable="false" />
+          <Property Name="LastLogin" Type="datetime" />
         </EntityType>
         <Association Name="FK_SendMail_Contact">
           <End Role="Contact" Type="SendMailModel.Store.Contact" Multiplicity="1" />
@@ -134,6 +157,8 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SendMail" EntitySet="SendMails" />
           </AssociationSet>
+          <EntitySet Name="TempScheduleSendEmails" EntityType="SendMailModel.TempScheduleSendEmail" />
+          <EntitySet Name="EmailOwns" EntityType="SendMailModel.EmailOwn" />
         </EntityContainer>
         <EntityType Name="Campaign">
           <Key>
@@ -208,6 +233,7 @@
           <Property Type="DateTime" Name="TimeCreated" Nullable="false" Precision="3" />
           <Property Type="Boolean" Name="isAdmin" Nullable="false" />
           <NavigationProperty Name="SendMails" Relationship="SendMailModel.FK_SendMail_User" FromRole="User" ToRole="SendMail" />
+          <Property Type="DateTime" Name="LastLogin" Precision="3" />
         </EntityType>
         <Association Name="FK_SendMail_Contact">
           <End Type="SendMailModel.Contact" Role="Contact" Multiplicity="1" />
@@ -233,6 +259,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TempScheduleSendEmail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="STT" />
+          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContentEmail" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmailOwn">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="isActive" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -307,11 +353,34 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SendMailModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
                 <ScalarProperty Name="TimeCreated" ColumnName="TimeCreated" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="AccountName" ColumnName="AccountName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TempScheduleSendEmails">
+            <EntityTypeMapping TypeName="SendMailModel.TempScheduleSendEmail">
+              <MappingFragment StoreEntitySet="TempScheduleSendEmails">
+                <ScalarProperty Name="ContentEmail" ColumnName="ContentEmail" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="STT" ColumnName="STT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailOwns">
+            <EntityTypeMapping TypeName="SendMailModel.EmailOwn">
+              <MappingFragment StoreEntitySet="EmailOwn">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

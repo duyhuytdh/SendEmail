@@ -11,8 +11,42 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+    <style type="text/css">
+    body
+    {
+        font-family: Arial;
+        font-size: 10pt;
+    }
+    .main_menu
+    {
+        width: 100px;
+        background-color: #8AE0F2;
+        color: #000;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 5px;
+    }
+    .level_menu
+    {
+        width: 110px;
+        background-color: #000;
+        color: #fff;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 5px;
+    }
+    .selected
+    {
+        background-color: #852B91;
+        color: #fff;
+    }
+</style>
 
 </head>
 <body>
@@ -49,14 +83,23 @@
                     <a class="navbar-brand" runat="server" href="~/frmHome">Mobilink</a>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    <%--        <ul class="nav navbar-nav" id="sf-menu">
                         <li><a runat="server" href="~/frmHome">Trang chủ</a></li>
                         <li><a runat="server" href="~/frmSendMail">Gửi một nội dung</a></li>
                         <li><a runat="server" href="~/frmSendMailwithContents">Gửi nhiều nội dung</a></li>
                         <li><a runat="server" href="~/frmContact">Danh bạ</a></li>
                         <li><a runat="server" href="~/frmCampaign">Chiến dịch</a></li>
                         <li><a runat="server" href="~/frmUser">Quản lý người dùng</a></li>
-                    </ul>
+                        <li><a runat="server" href="~/frmEmailOwn">Quản lý email hệ thống</a></li>
+                    </ul>--%>
+                    <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+                    <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal" ShowStartingNode="false">
+                        <LevelMenuItemStyles>
+                            <asp:MenuItemStyle CssClass="main_menu" />
+                            <asp:MenuItemStyle CssClass="level_menu" />
+                        </LevelMenuItemStyles>
+                    </asp:Menu>
+
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
@@ -80,7 +123,7 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
-         <%--   <footer>
+            <%--   <footer>
                 <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
             </footer>--%>
         </div>

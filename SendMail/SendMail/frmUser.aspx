@@ -33,7 +33,8 @@
                             <EditFormSettings Visible="False"></EditFormSettings>
                         </dx:GridViewDataTextColumn>
                         <dx:GridViewDataTextColumn FieldName="AccountName" VisibleIndex="2"></dx:GridViewDataTextColumn>
-                        <dx:GridViewDataTextColumn FieldName="Password" VisibleIndex="3"></dx:GridViewDataTextColumn>
+                        <dx:GridViewDataTextColumn FieldName="Password" VisibleIndex="3">
+                        </dx:GridViewDataTextColumn>
                         <dx:GridViewDataDateColumn FieldName="TimeCreated" VisibleIndex="4" ReadOnly="True"></dx:GridViewDataDateColumn>
                         <dx:GridViewDataCheckColumn FieldName="isAdmin" VisibleIndex="5"></dx:GridViewDataCheckColumn>
                     </Columns>

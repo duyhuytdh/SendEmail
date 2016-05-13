@@ -31,5 +31,7 @@ namespace SendMail.Models
         public DbSet<SendMail> SendMails { get; set; }
         public DbSet<TempSendEmail> TempSendEmails { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<TempScheduleSendEmail> TempScheduleSendEmails { get; set; }
+        public DbSet<EmailOwn> EmailOwns { get; set; }
     }
 }

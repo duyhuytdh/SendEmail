@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="" title="Home" description="">
+    <siteMapNode url="frmHome.aspx" title="Trang chủ"  description="" />
+    <siteMapNode url="" title="Gửi Email"  description="">
+      <siteMapNode url="frmSendMail.aspx" title="Gửi một nội dung"  description="" />
+      <siteMapNode url="frmSendMailwithContents.aspx" title="Gửi nhiều nội dung"  description="" />
+    </siteMapNode>
+    <siteMapNode url="frmCampaign.aspx" title="Chiến dịch"  description="" />
+    <siteMapNode url="frmContact.aspx" title="Danh bạ"  description="" />
+    <siteMapNode url="" title="Hệ thống"  description="" >
+      <siteMapNode url="frmUser.aspx" title="Quản lý email hệ thống"  description="" />
+      <siteMapNode url="frmEmailOwn.aspx" title="Quản lý người dùng"  description="" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

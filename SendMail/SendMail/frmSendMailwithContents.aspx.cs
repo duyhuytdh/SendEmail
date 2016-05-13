@@ -11,6 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Web.Security;
+using System.Linq;
 
 
 namespace SendMail
@@ -24,6 +25,7 @@ namespace SendMail
         #region Data structure
         private static class DataField
         {
+            public const string STT = "STT";
             public const string Email = "Email";
             public const string Subject = "Subject";
             public const string Content = "ContentEmail";
@@ -31,6 +33,55 @@ namespace SendMail
         #endregion
 
         #region Private Method
+        private void saveTempScheduleSendEmail()
+        {
+            for (int i = 0; i < gridView.VisibleRowCount; i++)
+            {
+                if (gridView.GetRowLevel(i) == gridView.GroupCount)
+                {
+                    object keyValue = gridView.GetRowValues(i, new string[] {DataField.STT, DataField.Email, DataField.Subject, DataField.Content });
+                    if (keyValue != null)
+                    {
+                        using (SendMailEntities db = new SendMailEntities())
+                        {
+                            Array arr = (Array)keyValue;
+                            TempScheduleSendEmail temp = new TempScheduleSendEmail();
+                            temp.STT = Int64.Parse(arr.GetValue(0).ToString());
+                            temp.Email = arr.GetValue(1).ToString();
+                            temp.Subject = arr.GetValue(2).ToString();
+                            temp.ContentEmail = arr.GetValue(3).ToString();
+
+                            db.TempScheduleSendEmails.Add(temp);
+                            db.SaveChanges();
+                        }
+                    }
+
+                }
+            }
+        }
+
+        private void sendEmailSchedule()
+        {
+            using (SendMailEntities db = new SendMailEntities())
+            {
+                List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
+                list_temp = db.TempScheduleSendEmails.ToList();
+                foreach (var item in list_temp)
+                {
+                    //Array arr = (Array)keyValue;
+                    //email.toEmail = arr.GetValue(0).ToString();
+                    //email.subject = arr.GetValue(1).ToString();
+                    //email.body = arr.GetValue(2).ToString();
+
+                    //STPMService.SendMail(email.fromEmail
+                    //       , email.passWordSendMail
+                    //       , email.toEmail
+                    //       , email.subject
+                    //       , email.body);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Method
@@ -176,6 +227,7 @@ namespace SendMail
         {
             try
             {
+                saveTempScheduleSendEmail();
                 DateTime date = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
 
                 // Grab the Scheduler instance from the Factory 
@@ -185,7 +237,7 @@ namespace SendMail
                 scheduler.Start();
 
                 // define the job and tie it to our HelloJob class
-                IJobDetail job = JobBuilder.Create<HelloJob>()
+                IJobDetail job = JobBuilder.Create<SendEmailJob>()
                     .WithIdentity("job1", "group1")
                     .Build();
 
@@ -222,11 +274,11 @@ namespace SendMail
             }
         }
 
-        public class HelloJob : IJob
+        public class SendEmailJob : IJob
         {
             public void Execute(IJobExecutionContext context)
             {
-                Console.WriteLine("Greetings from HelloJob!");               
+                //sendEmailSchedule();   
             }
         }
 

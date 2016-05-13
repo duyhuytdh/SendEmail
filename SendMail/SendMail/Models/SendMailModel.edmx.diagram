@@ -13,6 +13,8 @@
         <EntityTypeShape EntityType="SendMailModel.User" Width="1.5" PointX="6.4034747138635613" PointY="20.469281623358505" />
         <AssociationConnector Association="SendMailModel.FK_SendMail_Contact" />
         <AssociationConnector Association="SendMailModel.FK_SendMail_User" />
+        <EntityTypeShape EntityType="SendMailModel.TempScheduleSendEmail" Width="1.5" PointX="13.125" PointY="11.125" />
+        <EntityTypeShape EntityType="SendMailModel.EmailOwn" Width="1.5" PointX="4.5765667206498639" PointY="4.4194889983253036" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

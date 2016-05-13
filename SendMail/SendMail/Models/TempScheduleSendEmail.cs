@@ -12,20 +12,12 @@ namespace SendMail.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class TempScheduleSendEmail
     {
-        public User()
-        {
-            this.SendMails = new HashSet<SendMail>();
-        }
-    
-        public long UserID { get; set; }
-        public string AccountName { get; set; }
-        public string Password { get; set; }
-        public System.DateTime TimeCreated { get; set; }
-        public bool isAdmin { get; set; }
-        public Nullable<System.DateTime> LastLogin { get; set; }
-    
-        public virtual ICollection<SendMail> SendMails { get; set; }
+        public long ID { get; set; }
+        public Nullable<long> STT { get; set; }
+        public string Email { get; set; }
+        public string Subject { get; set; }
+        public string ContentEmail { get; set; }
     }
 }
