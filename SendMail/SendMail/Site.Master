@@ -46,11 +46,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">Mobilink</a>
+                    <a class="navbar-brand" runat="server" href="~/frmHome">Mobilink</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Trang chủ</a></li>
+                        <li><a runat="server" href="~/frmHome">Trang chủ</a></li>
                         <li><a runat="server" href="~/frmSendMail">Gửi một nội dung</a></li>
                         <li><a runat="server" href="~/frmSendMailwithContents">Gửi nhiều nội dung</a></li>
                         <li><a runat="server" href="~/frmContact">Danh bạ</a></li>
