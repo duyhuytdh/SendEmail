@@ -10,34 +10,43 @@
 namespace SendMail {
     
     
-    public partial class frmLogin {
+    public partial class frmChangePassword {
         
         /// <summary>
-        /// form1 control.
+        /// txt_pass_old control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txt_pass_old;
         
         /// <summary>
-        /// txt_account control.
+        /// txt_pass_new control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_account;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txt_pass_new;
         
         /// <summary>
-        /// txt_password control.
+        /// txt_pass_new_repeat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txt_password;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txt_pass_new_repeat;
+        
+        /// <summary>
+        /// btnChangePass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnChangePass;
         
         /// <summary>
         /// lbl_failure control.
@@ -47,23 +56,5 @@ namespace SendMail {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_failure;
-        
-        /// <summary>
-        /// rememberMe control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox rememberMe;
-        
-        /// <summary>
-        /// btnLogin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
     }
 }

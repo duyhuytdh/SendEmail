@@ -41,10 +41,10 @@ namespace SendMail
                     switch (userId)
                     {
                         case -1:
-                            lbl_failure.Text = "Username and/or password is incorrect.";
+                            lbl_failure.Text = "Tên tài khoản hoặc mật khẩu không chính xác!";
                             break;
                         default:
-                            FormsAuthentication.RedirectFromLoginPage(txt_account.Value, true);
+                            FormsAuthentication.RedirectFromLoginPage(txt_account.Value,rememberMe.Checked);
                             FormsAuthentication.SetAuthCookie(txt_account.Value, true);
                             Debugger.Log(1,"Login"," "+this.User.Identity.IsAuthenticated);
                             break;
@@ -52,8 +52,7 @@ namespace SendMail
                 }
             }
             catch (Exception)
-            {
-                
+            {       
                 throw;
             }
         }

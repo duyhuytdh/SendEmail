@@ -1,17 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Configuration;
-
+﻿using DevExpress.Web;
+using Quartz;
+using Quartz.Impl;
 using SendMail.Models;
 using SendMail.ServiceMail;
 using SendMail.Util;
-using System.Data;
-using DevExpress.Web;
-using SendMail.Models;
+using System;
 using System.Collections.Generic;
-using Quartz;
-using Quartz.Impl;
+using System.Configuration;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Web.Security;
 
 
