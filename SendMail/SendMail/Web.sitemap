@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
-  <siteMapNode url="" title="Home" description="">
+  <siteMapNode url="" title="Mobilink" description="">
     <siteMapNode url="frmHome.aspx" title="Trang chủ"  description="" />
     <siteMapNode url="" title="Gửi Email"  description="">
       <siteMapNode url="frmSendMail.aspx" title="Gửi một nội dung"  description="" />

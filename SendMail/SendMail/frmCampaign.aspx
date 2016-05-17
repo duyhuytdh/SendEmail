@@ -43,15 +43,15 @@
 
     <div class="gridView">
          <dx:ASPxGridView ID="gridCampaign" runat="server" AutoGenerateColumns="False" Width="720px" DataSourceID="CampaignDataSource" KeyFieldName="CampaignID">
-             <SettingsSearchPanel Visible="True" />
              <Columns>
-                 <dx:GridViewDataTextColumn FieldName="CampaignName" VisibleIndex="0">
+                 <dx:GridViewCommandColumn ShowNewButtonInHeader="True" VisibleIndex="0" ShowEditButton="True"></dx:GridViewCommandColumn>
+                 <dx:GridViewDataTextColumn FieldName="CampaignName" VisibleIndex="1">
                  </dx:GridViewDataTextColumn>
-                 <dx:GridViewDataCheckColumn FieldName="isActive" VisibleIndex="1">
+                 <dx:GridViewDataCheckColumn FieldName="isActive" VisibleIndex="2">
                  </dx:GridViewDataCheckColumn>
-                 <dx:GridViewDataTextColumn FieldName="Description" VisibleIndex="2">
+                 <dx:GridViewDataTextColumn FieldName="Description" VisibleIndex="3">
                  </dx:GridViewDataTextColumn>
-                 <dx:GridViewDataTextColumn FieldName="CampaignID" ReadOnly="True" VisibleIndex="3">
+                 <dx:GridViewDataTextColumn FieldName="CampaignID" ReadOnly="True" VisibleIndex="4">
                      <EditFormSettings Visible="False"></EditFormSettings>
                  </dx:GridViewDataTextColumn>
              </Columns>

@@ -35,10 +35,20 @@
             width: 350px;
         }
 
+        .cmbEmailOwn {
+            width: 350px;
+        }
+
         .btnSchedule {
             margin: 10px 0 0 78px;
         }
-        #defaultCountdown { width: 240px; height: 50px; float:right; margin-right:150px;}
+
+        #defaultCountdown {
+            width: 240px;
+            height: 50px;
+            float: right;
+            margin-right: 150px;
+        }
     </style>
     <script src="Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery.dynDateTime.min.js" type="text/javascript"></script>
@@ -63,9 +73,9 @@
             });
         });
         $(function () {
-                var newYear = new Date()
-                newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
-                $('#defaultCountdown').countdown({ until: newYear });
+            var newYear = new Date()
+            newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
+            $('#defaultCountdown').countdown({ until: newYear });
         });
     </script>
 
@@ -93,15 +103,25 @@
             <div id="content_send_mail" style="width: 900px !important; float: left">
 
                 <div style="float: left" runat="server">
-                    <div class="input-group">
+                    <%--          <div class="input-group">
                         <span class="input-group-addon">From Email</span>
                         <input runat="server" type="text" id="ip_txt_from_email" class="form-control" placeholder="Nhập email gửi" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">Password</span>
                         <input runat="server" type="password" id="ip_txt_pass_email" class="form-control" placeholder="Mật khẩu email gửi" aria-describedby="basic-addon1">
-                    </div>
+                    </div>--%>
+                    <dx:ASPxComboBox ID="cmbEmailOwn" runat="server" DataSourceID="EmailOwnDataSource" TextField="Email" ValueField="ID" Caption="Email hệ thống:"
+                        EnableSynchronization="False" CssClass="cmbEmailOwn">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="Email"></dx:ListBoxColumn>
+                            <dx:ListBoxColumn FieldName="Password" Visible="False"></dx:ListBoxColumn>
+                        </Columns>
+                    </dx:ASPxComboBox>
+                    <asp:SqlDataSource runat="server" ID="EmailOwnDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [ID], [Email], [Password] FROM [EmailOwn]"></asp:SqlDataSource>
+
                 </div>
+
                 <div class="groupImportList" runat="server">
                     <asp:FileUpload ID="FileUpload1" runat="server" class="marginControl" />
                     <asp:Button ID="btnUpload" class="btn btn-primary btn-sm marginControl" runat="server" Text="Upload" OnClick="btnUpload_Click" />

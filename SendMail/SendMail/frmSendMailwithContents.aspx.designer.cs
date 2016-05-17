@@ -49,22 +49,22 @@ namespace SendMail {
         protected global::System.Web.UI.WebControls.SqlDataSource CampaignDataSource;
         
         /// <summary>
-        /// ip_txt_from_email control.
+        /// cmbEmailOwn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText ip_txt_from_email;
+        protected global::DevExpress.Web.ASPxComboBox cmbEmailOwn;
         
         /// <summary>
-        /// ip_txt_pass_email control.
+        /// EmailOwnDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword ip_txt_pass_email;
+        protected global::System.Web.UI.WebControls.SqlDataSource EmailOwnDataSource;
         
         /// <summary>
         /// FileUpload1 control.

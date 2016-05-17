@@ -101,6 +101,9 @@ namespace SendMail
             cmbCampaign.DataBind();
             cmbCampaign.Items.Insert(0,new ListEditItem("None"));
             cmbCampaign.SelectedIndex = 0;
+
+            cmbEmailOwn.DataBind();
+            cmbEmailOwn.SelectedIndex = 0;
         }
 
 
@@ -182,8 +185,9 @@ namespace SendMail
             try
             {
                 EmailSend email = new EmailSend();
-                email.fromEmail = ip_txt_from_email.Value;
-                email.passWordSendMail = ip_txt_pass_email.Value;
+                ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
+                email.fromEmail = cmbEmailOwn.Text;
+                email.passWordSendMail = Cryption.Decrypt(selectedItem.GetValue("Password").ToString());
 
                 if (radio_service_google.Checked)
                 {
