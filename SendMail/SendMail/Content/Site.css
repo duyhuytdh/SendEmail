@@ -4,6 +4,11 @@ body {
     padding-bottom: 20px;
 }
 
+.table_content {
+    width:1200px;
+    margin:8px;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

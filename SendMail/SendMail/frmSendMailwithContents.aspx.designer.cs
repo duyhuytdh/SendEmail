@@ -103,6 +103,24 @@ namespace SendMail {
         protected global::System.Web.UI.WebControls.Button btnImportList;
         
         /// <summary>
+        /// gridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridView gridView;
+        
+        /// <summary>
+        /// EmailDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource EmailDataSource;
+        
+        /// <summary>
         /// btnSendListMail control.
         /// </summary>
         /// <remarks>
@@ -128,23 +146,5 @@ namespace SendMail {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSchedule;
-        
-        /// <summary>
-        /// gridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView gridView;
-        
-        /// <summary>
-        /// EmailDataSource control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource EmailDataSource;
     }
 }
