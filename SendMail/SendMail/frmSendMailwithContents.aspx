@@ -37,7 +37,7 @@
         }
 
         .schedule {
-            margin-left:5px;
+            margin-left: 5px;
         }
     </style>
     <script src="Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -170,8 +170,9 @@
                         <div style="display: inline-block; float: left;">
                             <span style="margin-left: 10px; font-weight: bold" class="schedule">Đặt lịch:</span>
                             <asp:TextBox ID="txt_date_schedule" runat="server" ReadOnly="true" placeholder="Chọn thời điểm gửi" class="schedule"></asp:TextBox>
-                            <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success btn-sm schedule" runat="server" Text="Bắt đầu" OnClick="btnSchedule_Click" />
+
                         </div>
+                        <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success btn-sm schedule" runat="server" Text="Bắt đầu" OnClick="btnSchedule_Click" />
 
                     </td>
                 </tr>

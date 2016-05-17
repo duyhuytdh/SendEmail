@@ -65,19 +65,22 @@ namespace SendMail
             using (SendMailEntities db = new SendMailEntities())
             {
                 List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
+                EmailSend email = new EmailSend();
                 list_temp = db.TempScheduleSendEmails.ToList();
+                email.fromEmail = cmbEmailOwn.Text;
+                ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
+                email.passWordSendMail = Cryption.Decrypt(selectedItem.GetValue("Password").ToString());
                 foreach (var item in list_temp)
                 {
-                    //Array arr = (Array)keyValue;
-                    //email.toEmail = arr.GetValue(0).ToString();
-                    //email.subject = arr.GetValue(1).ToString();
-                    //email.body = arr.GetValue(2).ToString();
+                    email.toEmail = item.Email;
+                    email.subject = item.Subject;
+                    email.body = item.ContentEmail;
 
-                    //STPMService.SendMail(email.fromEmail
-                    //       , email.passWordSendMail
-                    //       , email.toEmail
-                    //       , email.subject
-                    //       , email.body);
+                    STPMService.SendMail(email.fromEmail
+                           , email.passWordSendMail
+                           , email.toEmail
+                           , email.subject
+                           , email.body);
                 }
             }
         }
@@ -282,7 +285,8 @@ namespace SendMail
         {
             public void Execute(IJobExecutionContext context)
             {
-                //sendEmailSchedule();   
+                frmSendMailwithContents frm = new frmSendMailwithContents();
+                frm.sendEmailSchedule();   
             }
         }
 
