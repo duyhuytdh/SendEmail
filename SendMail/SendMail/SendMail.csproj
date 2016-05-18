@@ -321,6 +321,7 @@
     <Content Include="Global.asax" />
     <Content Include="frmSendMail.aspx" />
     <Content Include="frmSendMailwithContents.aspx" />
+    <Content Include="SendMailService.asmx" />
     <Content Include="Site.Master" />
     <Content Include="Styles\calendar-blue.css" />
     <Content Include="Styles\jquery.countdown.css" />
@@ -452,6 +453,10 @@
     </Compile>
     <Compile Include="frmSendMailwithContents.aspx.designer.cs">
       <DependentUpon>frmSendMailwithContents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SendMailService.asmx.cs">
+      <DependentUpon>SendMailService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ServiceMail\AmazonMailServicecs.cs" />
     <Compile Include="ServiceMail\CreateMail.cs" />

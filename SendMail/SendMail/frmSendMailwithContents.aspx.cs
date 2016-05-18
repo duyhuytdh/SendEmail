@@ -62,27 +62,6 @@ namespace SendMail
             }
         }
 
-        private void sendEmailSchedule()
-        {
-            SendMailEntities db = new SendMailEntities();
-            List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
-            EmailSend email = new EmailSend();
-            //list_temp = db.TempScheduleSendEmails.ToList();
-            EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == list_temp[0].IDEmailOwn);
-            foreach (var item in list_temp)
-            {
-                email.toEmail = item.Email;
-                email.subject = item.Subject;
-                email.body = item.ContentEmail;
-
-                STPMService.SendMail(emailOwn.Email
-                       , Cryption.Decrypt(emailOwn.Password)
-                       , email.toEmail
-                       , email.subject
-                       , email.body);
-            }
-        }
-
         #endregion
 
         #region Public Method
@@ -104,7 +83,7 @@ namespace SendMail
             cmbCampaign.SelectedIndex = 0;
 
             cmbEmailOwn.DataBind();
-            cmbEmailOwn.SelectedIndex = 0;
+            //cmbEmailOwn.SelectedIndex = 0;
         }
 
 
@@ -283,11 +262,16 @@ namespace SendMail
         {
             public void Execute(IJobExecutionContext context)
             {
-                frmSendMailwithContents frm = new frmSendMailwithContents();
-                frm.sendEmailSchedule();
+                SendMailService proxy = new SendMailService();
+                proxy.SendEmailSchedule();
             }
         }
 
         #endregion
+
+        protected void cmbEmailOwn_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
