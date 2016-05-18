@@ -19,5 +19,7 @@ namespace SendMail.Models
         public string Email { get; set; }
         public string Subject { get; set; }
         public string ContentEmail { get; set; }
+        public Nullable<long> IDEmailOwn { get; set; }
+        public Nullable<System.DateTime> TimeSchedule { get; set; }
     }
 }

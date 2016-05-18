@@ -35,11 +35,12 @@ namespace SendMail
         #region Private Method
         private void saveTempScheduleSendEmail()
         {
+            ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
             for (int i = 0; i < gridView.VisibleRowCount; i++)
             {
                 if (gridView.GetRowLevel(i) == gridView.GroupCount)
                 {
-                    object keyValue = gridView.GetRowValues(i, new string[] {DataField.STT, DataField.Email, DataField.Subject, DataField.Content });
+                    object keyValue = gridView.GetRowValues(i, new string[] { DataField.STT, DataField.Email, DataField.Subject, DataField.Content });
                     if (keyValue != null)
                     {
                         using (SendMailEntities db = new SendMailEntities())
@@ -50,7 +51,8 @@ namespace SendMail
                             temp.Email = arr.GetValue(1).ToString();
                             temp.Subject = arr.GetValue(2).ToString();
                             temp.ContentEmail = arr.GetValue(3).ToString();
-
+                            temp.IDEmailOwn = Int64.Parse(selectedItem.GetValue("ID").ToString());
+                            temp.TimeSchedule = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
                             db.TempScheduleSendEmails.Add(temp);
                             db.SaveChanges();
                         }
@@ -62,26 +64,22 @@ namespace SendMail
 
         private void sendEmailSchedule()
         {
-            using (SendMailEntities db = new SendMailEntities())
+            SendMailEntities db = new SendMailEntities();
+            List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
+            EmailSend email = new EmailSend();
+            //list_temp = db.TempScheduleSendEmails.ToList();
+            EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == list_temp[0].IDEmailOwn);
+            foreach (var item in list_temp)
             {
-                List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
-                EmailSend email = new EmailSend();
-                list_temp = db.TempScheduleSendEmails.ToList();
-                email.fromEmail = cmbEmailOwn.Text;
-                ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
-                email.passWordSendMail = Cryption.Decrypt(selectedItem.GetValue("Password").ToString());
-                foreach (var item in list_temp)
-                {
-                    email.toEmail = item.Email;
-                    email.subject = item.Subject;
-                    email.body = item.ContentEmail;
+                email.toEmail = item.Email;
+                email.subject = item.Subject;
+                email.body = item.ContentEmail;
 
-                    STPMService.SendMail(email.fromEmail
-                           , email.passWordSendMail
-                           , email.toEmail
-                           , email.subject
-                           , email.body);
-                }
+                STPMService.SendMail(emailOwn.Email
+                       , Cryption.Decrypt(emailOwn.Password)
+                       , email.toEmail
+                       , email.subject
+                       , email.body);
             }
         }
 
@@ -102,7 +100,7 @@ namespace SendMail
             radio_service_stpm.Checked = true;
 
             cmbCampaign.DataBind();
-            cmbCampaign.Items.Insert(0,new ListEditItem("None"));
+            cmbCampaign.Items.Insert(0, new ListEditItem("None"));
             cmbCampaign.SelectedIndex = 0;
 
             cmbEmailOwn.DataBind();
@@ -143,7 +141,7 @@ namespace SendMail
             {
 
                 SendMailEntities db = new SendMailEntities();
-             
+
                 List<TempSendEmail> listTemp = new List<TempSendEmail>();
 
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
@@ -249,7 +247,7 @@ namespace SendMail
                     .Build();
 
                 // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                ISimpleTrigger trigger = (ISimpleTrigger) TriggerBuilder.Create()
+                ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
                 .WithIdentity("trigger1", "group1")
                 .StartAt(date) // some Date 
                 .ForJob("job1", "group1") // identify job with name, group strings
@@ -263,7 +261,7 @@ namespace SendMail
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -286,7 +284,7 @@ namespace SendMail
             public void Execute(IJobExecutionContext context)
             {
                 frmSendMailwithContents frm = new frmSendMailwithContents();
-                frm.sendEmailSchedule();   
+                frm.sendEmailSchedule();
             }
         }
 

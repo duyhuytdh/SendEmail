@@ -92,6 +92,8 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Subject" Type="nvarchar" MaxLength="500" />
           <Property Name="ContentEmail" Type="text" />
+          <Property Name="IDEmailOwn" Type="bigint" />
+          <Property Name="TimeSchedule" Type="datetime" />
         </EntityType>
         <EntityType Name="TempSendEmails">
           <Key>
@@ -268,6 +270,8 @@
           <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ContentEmail" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="IDEmailOwn" />
+          <Property Type="DateTime" Name="TimeSchedule" Precision="3" />
         </EntityType>
         <EntityType Name="EmailOwn">
           <Key>
@@ -365,6 +369,8 @@
           <EntitySetMapping Name="TempScheduleSendEmails">
             <EntityTypeMapping TypeName="SendMailModel.TempScheduleSendEmail">
               <MappingFragment StoreEntitySet="TempScheduleSendEmails">
+                <ScalarProperty Name="TimeSchedule" ColumnName="TimeSchedule" />
+                <ScalarProperty Name="IDEmailOwn" ColumnName="IDEmailOwn" />
                 <ScalarProperty Name="ContentEmail" ColumnName="ContentEmail" />
                 <ScalarProperty Name="Subject" ColumnName="Subject" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
