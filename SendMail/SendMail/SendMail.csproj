@@ -343,6 +343,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Business\ContactBusiness.cs" />
     <Compile Include="frmChangePassword.aspx.cs">
       <DependentUpon>frmChangePassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -404,7 +405,7 @@
     <Compile Include="Models\Contact.cs">
       <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Email.cs">
+    <Compile Include="Models\EmailContent.cs">
       <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailOwn.cs">
@@ -412,7 +413,7 @@
     </Compile>
     <Compile Include="Models\EmailSend.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\SendMail.cs">
+    <Compile Include="Models\LogSendEmail.cs">
       <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SendMailModel.Context.cs">

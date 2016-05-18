@@ -12,18 +12,18 @@ namespace SendMail.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SendMail
+    public partial class LogSendEmail
     {
         public long SendMailID { get; set; }
         public long UserID { get; set; }
         public long ContactID { get; set; }
         public System.DateTime TimeSend { get; set; }
         public bool StatusSend { get; set; }
-        public string EmailUsed { get; set; }
+        public long IDEmailOwn { get; set; }
         public string TypeServiceUsed { get; set; }
         public string Note { get; set; }
         public Nullable<long> CampaignID { get; set; }
-        public long EmailID { get; set; }
+        public Nullable<long> EmailID { get; set; }
     
         public virtual Contact Contact { get; set; }
         public virtual User User { get; set; }

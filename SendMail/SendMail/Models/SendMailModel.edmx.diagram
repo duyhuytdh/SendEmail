@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="622a2e2c20cc496e997c6fbcba309276" Name="Diagram1">
-        <EntityTypeShape EntityType="SendMailModel.Campaign" Width="1.5" PointX="7.212916623434479" PointY="10.904921074819249" />
-        <EntityTypeShape EntityType="SendMailModel.Contact" Width="1.5" PointX="4.3538030257233435" PointY="30.556188836021438" />
-        <EntityTypeShape EntityType="SendMailModel.Email" Width="1.5" PointX="2.4691311523640209" PointY="17.443561875002256" />
-        <EntityTypeShape EntityType="SendMailModel.SendMail" Width="1.5" PointX="10.544029304079725" PointY="10.342686583447589" />
-        <EntityTypeShape EntityType="SendMailModel.TempSendEmail" Width="1.5" PointX="2.8885652976522991" PointY="11.712066372722418" />
-        <EntityTypeShape EntityType="SendMailModel.User" Width="1.5" PointX="6.4034747138635613" PointY="20.469281623358505" />
+        <EntityTypeShape EntityType="SendMailModel.Campaign" Width="1.5" PointX="1.7529172234949271" PointY="2.0593440989308731" />
+        <EntityTypeShape EntityType="SendMailModel.Contact" Width="1.5" PointX="4.6705509557717253" PointY="9.3154101117120174" />
+        <EntityTypeShape EntityType="SendMailModel.EmailContent" Width="1.5" PointX="7.0953071113188324" PointY="13.484779528102269" />
+        <EntityTypeShape EntityType="SendMailModel.EmailOwn" Width="1.5" PointX="9.5029809928978715" PointY="18.49543698993299" />
+        <EntityTypeShape EntityType="SendMailModel.LogSendEmail" Width="1.5" PointX="5.2865882503271981" PointY="25.963957858255114" />
+        <EntityTypeShape EntityType="SendMailModel.TempScheduleSendEmail" Width="1.5" PointX="3.64461641183338" PointY="25.444124576376808" />
+        <EntityTypeShape EntityType="SendMailModel.TempSendEmail" Width="1.5" PointX="1.2311240086476896" PointY="12.186967020941417" />
+        <EntityTypeShape EntityType="SendMailModel.User" Width="1.5" PointX="2.2085431917610312" PointY="18.4715577748006" />
         <AssociationConnector Association="SendMailModel.FK_SendMail_Contact" />
         <AssociationConnector Association="SendMailModel.FK_SendMail_User" />
-        <EntityTypeShape EntityType="SendMailModel.TempScheduleSendEmail" Width="1.5" PointX="13.125" PointY="11.125" />
-        <EntityTypeShape EntityType="SendMailModel.EmailOwn" Width="1.5" PointX="4.5765667206498639" PointY="4.4194889983253036" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

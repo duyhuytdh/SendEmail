@@ -2,7 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Configuration;
-
+using System.Linq;
 using SendMail.Models;
 using SendMail.ServiceMail;
 using SendMail.Util;
@@ -14,6 +14,7 @@ using Quartz;
 using Quartz.Impl;
 using System.Web.UI;
 using System.Web.Security;
+using SendMail.Business;
 
 namespace SendMail
 {
@@ -89,29 +90,56 @@ namespace SendMail
                     DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
                     foreach (DataRow dr in dt.Rows)
                     {
-                        Contact contact = new Contact();
-                        contact.Email = dr["Email"].ToString();
-                        contact.FirstName = dr["FirstName"].ToString();
-                        contact.LastName = dr["LastName"].ToString();
-                        contact.FullName = dr["FullName"].ToString();
-                        contact.Phone = dr["Phone"].ToString();
-                        contact.Adress = dr["Address"].ToString();
-                        if (dr["Gender"].ToString().Trim().ToUpper().Equals("NỮ"))
+                        Contact contact;
+                        if (!ContactBusiness.checkContactIsExist(dr["Email"].ToString().Trim()))
                         {
-                            contact.Gender = 0;
+                             contact = new Contact();
+                             contact.Email = dr["Email"].ToString().Trim();
+                             contact.FirstName = dr["FirstName"].ToString();
+                             contact.LastName = dr["LastName"].ToString();
+                             contact.FullName = dr["FullName"].ToString();
+                             contact.Phone = dr["Phone"].ToString();
+                             contact.Adress = dr["Address"].ToString();
+                             if (dr["Gender"].ToString().Trim().ToUpper().Equals("NỮ"))
+                             {
+                                 contact.Gender = 0;
+                             }
+                             else
+                             {
+                                 contact.Gender = 1;
+                             }
+
+                             contact.Birthday = DateTime.Parse(dr["Birthday"].ToString());
+                             listContact.Add(contact);
                         }
                         else
                         {
-                            contact.Gender = 1;
-                        }
+                            contact = db.Contacts.FirstOrDefault(x => x.Email == dr["Email"].ToString().Trim());
+                            contact.Email = dr["Email"].ToString().Trim();
+                            contact.FirstName = dr["FirstName"].ToString();
+                            contact.LastName = dr["LastName"].ToString();
+                            contact.FullName = dr["FullName"].ToString();
+                            contact.Phone = dr["Phone"].ToString();
+                            contact.Adress = dr["Address"].ToString();
+                            if (dr["Gender"].ToString().Trim().ToUpper().Equals("NỮ"))
+                            {
+                                contact.Gender = 0;
+                            }
+                            else
+                            {
+                                contact.Gender = 1;
+                            }
 
-                        contact.Birthday = DateTime.Parse(dr["Birthday"].ToString());
-                        listContact.Add(contact);
+                            contact.Birthday = DateTime.Parse(dr["Birthday"].ToString());
+                        }
+               
+                    }
+                    if (listContact.Count > 0)
+                    {
+                        db.Contacts.AddRange(listContact);
                     }
 
-                    db.Contacts.AddRange(listContact);
                     db.SaveChanges();
-
                     gridView.DataBind();
                 }
                 else

@@ -16,7 +16,7 @@ namespace SendMail.Models
     {
         public Contact()
         {
-            this.SendMails = new HashSet<SendMail>();
+            this.LogSendEmails = new HashSet<LogSendEmail>();
         }
     
         public long ContactID { get; set; }
@@ -29,6 +29,6 @@ namespace SendMail.Models
         public string Adress { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
     
-        public virtual ICollection<SendMail> SendMails { get; set; }
+        public virtual ICollection<LogSendEmail> LogSendEmails { get; set; }
     }
 }

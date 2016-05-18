@@ -21,5 +21,6 @@ namespace SendMail.Models
         public string ContentEmail { get; set; }
         public Nullable<long> IDEmailOwn { get; set; }
         public Nullable<System.DateTime> TimeSchedule { get; set; }
+        public Nullable<long> IDCampaign { get; set; }
     }
 }

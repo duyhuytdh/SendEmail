@@ -12,7 +12,7 @@ namespace SendMail.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Email
+    public partial class EmailContent
     {
         public long EmailID { get; set; }
         public string Subject { get; set; }

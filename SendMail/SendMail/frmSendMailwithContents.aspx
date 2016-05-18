@@ -90,6 +90,10 @@
                             DataSourceID="CampaignDataSource" TextField="CampaignName" ValueField="CampaignID" Caption="Chiến dịch:"
                             EnableSynchronization="False" CssClass="cmbCampaign">
                             <ClientSideEvents SelectedIndexChanged="function(s, e) { OnCountryChanged(s); }" />
+                            <Columns>
+                                <dx:ListBoxColumn FieldName="CampaignID" Visible="False"></dx:ListBoxColumn>
+                                <dx:ListBoxColumn FieldName="CampaignName"></dx:ListBoxColumn>
+                            </Columns>
                         </dx:ASPxComboBox>
                         <asp:SqlDataSource runat="server" ID="CampaignDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [CampaignID], [CampaignName] FROM [Campaign] WHERE ([isActive] = @isActive)">
                             <SelectParameters>

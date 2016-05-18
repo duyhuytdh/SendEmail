@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Web.Security;
 using System.Linq;
-
+using SendMail.Business;
 
 namespace SendMail
 {
@@ -35,7 +35,8 @@ namespace SendMail
         #region Private Method
         private void saveTempScheduleSendEmail()
         {
-            ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
+            ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+            ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
             for (int i = 0; i < gridView.VisibleRowCount; i++)
             {
                 if (gridView.GetRowLevel(i) == gridView.GroupCount)
@@ -51,7 +52,11 @@ namespace SendMail
                             temp.Email = arr.GetValue(1).ToString();
                             temp.Subject = arr.GetValue(2).ToString();
                             temp.ContentEmail = arr.GetValue(3).ToString();
-                            temp.IDEmailOwn = Int64.Parse(selectedItem.GetValue("ID").ToString());
+                            temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                            if (cmbCampaign.SelectedIndex > 0)
+                            {
+                                temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+                            }
                             temp.TimeSchedule = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
                             db.TempScheduleSendEmails.Add(temp);
                             db.SaveChanges();
@@ -80,10 +85,15 @@ namespace SendMail
 
             cmbCampaign.DataBind();
             cmbCampaign.Items.Insert(0, new ListEditItem("None"));
-            cmbCampaign.SelectedIndex = 0;
+            
 
             cmbEmailOwn.DataBind();
-            //cmbEmailOwn.SelectedIndex = 0;
+ 
+            if (!IsPostBack && !IsCallback)
+            {
+                cmbCampaign.SelectedIndex = 0;
+                cmbEmailOwn.SelectedIndex = 1;
+            }
         }
 
 
@@ -120,8 +130,8 @@ namespace SendMail
             {
 
                 SendMailEntities db = new SendMailEntities();
-
                 List<TempSendEmail> listTemp = new List<TempSendEmail>();
+                List<Contact> lst_contact = new List<Contact>();
 
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
                 string FileName = txtNameFileUpload.Text;
@@ -140,11 +150,21 @@ namespace SendMail
                         temp.ContentEmail = dr["Content"].ToString();
                         temp.Email = dr["Email"].ToString();
                         listTemp.Add(temp);
+                        //check contact, if is not exist then save to db
+                        if (!ContactBusiness.checkContactIsExist(temp.Email))
+                        {
+                            Contact contact = new Contact();
+                            contact.Email = temp.Email;
+                            lst_contact.Add(contact);
+                        }
                     }
 
                     db.TempSendEmails.AddRange(listTemp);
+                    if (lst_contact.Count > 0)
+                    {
+                        db.Contacts.AddRange(lst_contact);
+                    }
                     db.SaveChanges();
-
                     gridView.DataBind();
                 }
                 else

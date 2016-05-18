@@ -16,7 +16,7 @@ namespace SendMail.Models
     {
         public User()
         {
-            this.SendMails = new HashSet<SendMail>();
+            this.LogSendEmails = new HashSet<LogSendEmail>();
         }
     
         public long UserID { get; set; }
@@ -26,6 +26,6 @@ namespace SendMail.Models
         public bool isAdmin { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
     
-        public virtual ICollection<SendMail> SendMails { get; set; }
+        public virtual ICollection<LogSendEmail> LogSendEmails { get; set; }
     }
 }
