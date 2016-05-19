@@ -24,6 +24,8 @@ namespace SendMail.Models
         public string Note { get; set; }
         public Nullable<long> CampaignID { get; set; }
         public Nullable<long> EmailID { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
     
         public virtual Contact Contact { get; set; }
         public virtual User User { get; set; }

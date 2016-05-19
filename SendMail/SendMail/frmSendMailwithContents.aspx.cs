@@ -128,8 +128,8 @@ namespace SendMail
         {
             try
             {
-                ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
-                ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
+                //ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+                //ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
                 SendMailEntities db = new SendMailEntities();
                 List<TempSendEmail> listTemp = new List<TempSendEmail>();
                 List<Contact> lst_contact = new List<Contact>();
@@ -152,11 +152,11 @@ namespace SendMail
                         temp.Email = dr["Email"].ToString();
                         temp.IDUser = mGlobal.UserID;
                         temp.TimeSend = DateTime.Now;
-                        temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
-                         if (cmbCampaign.SelectedIndex > 0)
-                         {
-                                temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
-                          }
+                        //temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                         //if (cmbCampaign.SelectedIndex > 0)
+                         //{
+                         //       temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+                         // }
                         listTemp.Add(temp);
                         //check contact, if is not exist then save to db
                         if (!ContactBusiness.checkContactIsExist(temp.Email))
@@ -193,11 +193,13 @@ namespace SendMail
             try
             {
                 SendMailEntities db = new SendMailEntities();
-                List<EmailContent> lst_emailContent = new List<EmailContent>();
+                //List<EmailContent> lst_emailContent = new List<EmailContent>();
                 List<LogSendEmail> lst_logEndEmail = new List<LogSendEmail>();
                 List<TempSendEmail> lst_TempSendEmail = new List<TempSendEmail>();
-                ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
-                EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == Int64.Parse(selectedItem.GetValue("ID").ToString()));
+                ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+                ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
+                Int64 IdEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
                 lst_TempSendEmail = db.TempSendEmails.Where(x=>x.IDUser == mGlobal.UserID).ToList();
                 
                
@@ -212,46 +214,38 @@ namespace SendMail
                 {
                     foreach (TempSendEmail item in lst_TempSendEmail)
                     {
-
-                        EmailContent emailContent = new EmailContent();
-
-                        emailContent.Subject = item.Subject;
-                        emailContent.ContentEmail = item.ContentEmail;
-                        lst_emailContent.Add(emailContent);
-
                         //get contact
                         Contact contact = db.Contacts.FirstOrDefault(x => x.Email == item.Email);
 
-                        //get UserID
-
-                        //User user = db.Users.FirstOrDefault(x => x.AccountName == userName);
-
                         //save log send email
-                            LogSendEmail log = new LogSendEmail();
-                            if (item.IDCampaign != null)
-                            {
-                                log.CampaignID = item.IDCampaign;
-                            }
+                        LogSendEmail log = new LogSendEmail();
+                        if (cmbCampaign.SelectedIndex > 0)
+                        {
+                            log.CampaignID = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+                        }
 
-                            log.ContactID = contact.ContactID;
-                            log.EmailID = emailContent.EmailID;
-                            log.StatusSend = true;
-                            log.IDEmailOwn = Int64.Parse(item.IDEmailOwn.ToString());
-                            log.TypeServiceUsed = mGlobal.STPM;
-                            log.UserID = mGlobal.UserID;
+                        log.ContactID = contact.ContactID;
+                        log.Subject = item.Subject;
+                        log.Body = item.ContentEmail;
+                        //log.EmailID = emailContent.EmailID;
+                        log.StatusSend = true;
+                        log.IDEmailOwn = IdEmailOwn;
+                        log.TypeServiceUsed = mGlobal.STPM;
+                        log.UserID = mGlobal.UserID;
+                        log.TimeSend = DateTime.Now;
 
-                            lst_logEndEmail.Add(log);
+                        lst_logEndEmail.Add(log);
 
 
-                            STPMService.SendMail(emailOwn.Email
-                               , Cryption.Decrypt(emailOwn.Password)
-                               , item.Email
-                               , item.Subject
-                               , item.ContentEmail);
+                        STPMService.SendMail(emailOwn.Email
+                            , Cryption.Decrypt(emailOwn.Password)
+                            , item.Email
+                            , item.Subject
+                            , item.ContentEmail);
                         
                     }
 
-                    db.EmailContents.AddRange(lst_emailContent);
+                    //db.EmailContents.AddRange(lst_emailContent);
                     db.LogSendEmails.AddRange(lst_logEndEmail);
                     db.SaveChanges();
                     ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Gửi thành công!" + "');", true);
@@ -260,7 +254,7 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
+            //    Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 
@@ -326,10 +320,6 @@ namespace SendMail
 
         #endregion
 
-        protected void cmbEmailOwn_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         protected void gridView_RowInserted(object sender, DevExpress.Web.Data.ASPxDataInsertedEventArgs e)
         {
@@ -352,5 +342,6 @@ namespace SendMail
                 throw;
             }
         }
+
     }
 }

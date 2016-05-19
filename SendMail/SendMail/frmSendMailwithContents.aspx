@@ -103,7 +103,7 @@
                     </td>
                     <td>
                         <dx:ASPxComboBox ID="cmbEmailOwn" runat="server" DataSourceID="EmailOwnDataSource" TextField="Email" ValueField="ID" Caption="Email hệ thống:"
-                            EnableSynchronization="False" CssClass="cmbEmailOwn" OnValueChanged="cmbEmailOwn_ValueChanged">
+                            EnableSynchronization="False" CssClass="cmbEmailOwn">
                             <Columns>
                                 <dx:ListBoxColumn FieldName="ID" Visible="False"></dx:ListBoxColumn>
                                 <dx:ListBoxColumn FieldName="Email"></dx:ListBoxColumn>

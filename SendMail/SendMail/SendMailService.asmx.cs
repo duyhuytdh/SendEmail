@@ -34,8 +34,6 @@ namespace SendMail
                 using (SendMailEntities db = new SendMailEntities())
                 {
                     List<TempScheduleSendEmail> list_temp = new List<TempScheduleSendEmail>();
-                    EmailSend email = new EmailSend();
-                    List<EmailContent> lst_emailContent = new List<EmailContent>();
                     List<LogSendEmail> lst_logEndEmail = new List<LogSendEmail>();
                     
                     TempScheduleSendEmail latest = db.TempScheduleSendEmails.OrderBy(m => m.TimeSchedule).FirstOrDefault();
@@ -44,16 +42,6 @@ namespace SendMail
                     EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == idEmailOwn);
                     foreach (var item in list_temp)
                     {
-                        EmailContent emailContent = new EmailContent();
-                        emailContent.ContentEmail = item.ContentEmail;
-                        emailContent.Subject = item.Subject;
-                        emailContent.ContentEmail = item.ContentEmail;
-                        email.toEmail = item.Email;
-                        email.subject = item.Subject;
-                        email.body = item.ContentEmail;
-
-                        //save email content
-                        lst_emailContent.Add(emailContent);
 
                         //get contact
                         Contact contact = db.Contacts.FirstOrDefault(x => x.Email == item.Email);
@@ -66,21 +54,22 @@ namespace SendMail
                         }
 
                         log.ContactID = contact.ContactID;
-                        log.EmailID = emailContent.EmailID;
                         log.StatusSend = true;
                         log.IDEmailOwn = emailOwn.ID;
                         log.TypeServiceUsed = "STPM";
                         log.UserID = mGlobal.UserID;
+                        log.Subject = item.Subject;
+                        log.Body = item.ContentEmail;
 
                         lst_logEndEmail.Add(log);
 
                         STPMService.SendMail(emailOwn.Email
                                , Cryption.Decrypt(emailOwn.Password)
-                               , email.toEmail
-                               , email.subject
-                               , email.body);
+                               , item.Email
+                               , item.Subject
+                               , item.ContentEmail);
                     }
-                    db.EmailContents.AddRange(lst_emailContent);
+                    //db.EmailContents.AddRange(lst_emailContent);
                     db.LogSendEmails.AddRange(lst_logEndEmail);
                     db.TempScheduleSendEmails.RemoveRange(list_temp);
                     db.SaveChanges();

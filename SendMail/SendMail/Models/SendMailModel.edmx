@@ -82,6 +82,8 @@
           <Property Name="Note" Type="nvarchar" MaxLength="50" />
           <Property Name="CampaignID" Type="bigint" />
           <Property Name="EmailID" Type="bigint" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="500" />
+          <Property Name="Body" Type="text" />
         </EntityType>
         <EntityType Name="TempScheduleSendEmails">
           <Key>
@@ -230,6 +232,8 @@
           <Property Type="Int64" Name="EmailID" />
           <NavigationProperty Name="Contact" Relationship="SendMailModel.FK_SendMail_Contact" FromRole="LogSendEmail" ToRole="Contact" />
           <NavigationProperty Name="User" Relationship="SendMailModel.FK_SendMail_User" FromRole="LogSendEmail" ToRole="User" />
+          <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Body" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TempScheduleSendEmail">
           <Key>
@@ -353,6 +357,8 @@
           <EntitySetMapping Name="LogSendEmails">
             <EntityTypeMapping TypeName="SendMailModel.LogSendEmail">
               <MappingFragment StoreEntitySet="LogSendEmail">
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
                 <ScalarProperty Name="EmailID" ColumnName="EmailID" />
                 <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
