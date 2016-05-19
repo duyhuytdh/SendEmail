@@ -4,51 +4,31 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style>
-        .input-group {
-            width: 400px;
-            margin: 8px;
+        .table_content td {
+            padding: 5px 10px;
         }
 
-        .input-group-addon {
-            width: 100px;
+        .cmbEmailOwn {
+            width:300px !important;
         }
 
-        #btn_import_list {
-            padding-top: 10px;
-            float: right;
+        .cmbContact {
+            width:300px !important;
         }
-
-        #content_send_mail {
-            margin-top: 30px;
-        }
-
-        .groupImportList {
-            float: right;
-            margin-right: 100px;
-        }
-
-        .marginControl {
-            margin: 8px;
-        }
-
         .listBoxEmail {
             width: 200px !important;
-            height: 500px !important;
-            /*border-style:dotted;
-            border:2px;
-            background:border-box;*/
+            height: 440px !important;
         }
 
         #ConentlistBoxEmail {
             width: 300px;
             height: 500px;
-            margin-top: 30px;
             float: right;
         }
 
         #ct_listCheckBoxEmail {
             width: 220px;
-            height: 500px;
+            height: 440px;
             border-style: double;
             border-width: 1px;
             OVERFLOW-Y: scroll;
@@ -74,62 +54,98 @@
     </script>
 
     <div id="content" style="width: 1200px !important; display: inline-block; float: right;">
-        <div id="content_send_mail" style="width: 900px !important; float: left">
-            <div id="group_radio_select_service">
-                <label for="comment">Chọn service: </label>
-                <label class="radio-inline">
-                    <input runat="server" type="radio" name="radio_service" id="radio_service_google">Google Serice</label>
-                <label class="radio-inline">
-                    <input runat="server" type="radio" name="radio_Service" id="radio_service_stpm">STPM Service</label>
-            </div>
-            <div style="float: left" runat="server">
-                <div class="input-group">
-                    <span class="input-group-addon">From Email</span>
-                    <input runat="server" type="text" id="ip_txt_from_email" class="form-control" placeholder="Nhập email gửi" aria-describedby="basic-addon1">
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">Password</span>
-                    <input runat="server" type="password" id="ip_txt_pass_email" class="form-control" placeholder="Mật khẩu email gửi" aria-describedby="basic-addon1">
-                </div>
-                <div style="float: left" class="input-group">
-                    <span class="input-group-addon">To Email</span>
-                    <input runat="server" type="text" id="ip_txt_to_email" class="form-control" placeholder="Nhập email nhận" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="groupImportList" runat="server">
-                <asp:FileUpload ID="FileUpload1" runat="server" class="marginControl" />
-                <asp:Button ID="btnUpload" class="btn btn-primary btn-sm marginControl" runat="server" Text="Upload" OnClick="btnUpload_Click" />
-                <asp:Label ID="txtNameFileUpload" runat="server">(File excel .xls, .xlsx)</asp:Label>
-                <br />
-                <asp:Button ID="btnImportList" class="btn btn-success marginControl" runat="server" Text="Import list email" OnClick="btnImportList_Click" />
-            </div>
-            <div class="input-group" style="width: 700px">
-                <span class="input-group-addon" style="width: 100px">Subject</span>
-                <input runat="server" type="text" id="ip_txt_subject" class="form-control" style="max-width: 590px; width: 590px" placeholder="Nhập tiêu đề mail" aria-describedby="basic-addon1">
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" rows="7" id="txt_content_mail" placeholder="Nhập nội dung email..." runat="server" style="width: 700px"></textarea>
-            </div>
-            <asp:Button ID="btnSendMail" class="btn btn-success" runat="server" Text="Gửi Email đơn" OnClick="btnSendMail_Click" />
-            <asp:Button ID="btnSendListMail" class="btn btn-success" runat="server" Text="Gửi theo danh sách" OnClick="btnSendListMail_Click" />
-            <br />
-            <dx:ASPxProgressBar ID="progressBar" runat="server" Visible="false" Position="0" Width="200px"></dx:ASPxProgressBar>
-        </div>
-        <div id="ConentlistBoxEmail">
-            <div>
-                <label style="font-size: 12pt; font-weight: bold; margin-left: 10px;">Danh sách Email Import</label>
-                <br />
-                <dx:ASPxCheckBox ID="ASPxCheckBox1" runat="server" Text="Select All" ClientInstanceName="cbAll" CheckState="Unchecked">
-                    <ClientSideEvents CheckedChanged="OnCbAllCheckedChanged" />
-                </dx:ASPxCheckBox>
-                <br />
-                <%--<asp:ListBox ID="listBoxEmail" runat="server" CssClass="listBoxEmail" class="list-group"></asp:ListBox>--%>
-                <div id="ct_listCheckBoxEmail">
-                    <dx:ASPxCheckBoxList Border-BorderStyle="None" ID="checkBoxListEmail" runat="server" RepeatColumns="1" RepeatLayout="Table">
-                        <ClientSideEvents SelectedIndexChanged="cbList_SelectedIndexChanged" />
-                    </dx:ASPxCheckBoxList>
-                </div>
-            </div>
-        </div>
+        <table table class="table_content" style="width: 1200px">
+            <tr>
+                <td colspan="4">
+                    <div id="group_radio_select_service">
+                        <label for="comment">Chọn service: </label>
+                        <label class="radio-inline">
+                            <input runat="server" type="radio" name="radio_service" id="radio_service_google">Google Serice</label>
+                        <label class="radio-inline">
+                            <input runat="server" type="radio" name="radio_Service" id="radio_service_stpm">STPM Service</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <dx:ASPxComboBox ID="cmbEmailOwn" runat="server" DataSourceID="EmailOwnDataSource" TextField="Email" ValueField="ID" Caption="Email hệ thống:"
+                        EnableSynchronization="False" CssClass="cmbEmailOwn">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="ID" Visible="False"></dx:ListBoxColumn>
+                            <dx:ListBoxColumn FieldName="Email"></dx:ListBoxColumn>
+                            <dx:ListBoxColumn FieldName="Password" Visible="False"></dx:ListBoxColumn>
+                        </Columns>
+                    </dx:ASPxComboBox>
+                    <asp:SqlDataSource runat="server" ID="EmailOwnDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [ID], [Email], [Password] FROM [EmailOwn]"></asp:SqlDataSource>
+                </td>
+                <td colspan="2">
+                    <dx:ASPxComboBox ID="cmbContact" runat="server" DataSourceID="ContactDataSource" Caption="Email nhận:" CssClass="cmbContact">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="ContactID" Visible="False"></dx:ListBoxColumn>
+                            <dx:ListBoxColumn FieldName="Email"></dx:ListBoxColumn>
+                        </Columns>
+                    </dx:ASPxComboBox>
+                    <asp:SqlDataSource runat="server" ID="ContactDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [Email], [ContactID] FROM [Contact]"></asp:SqlDataSource>
+                </td>
+                <td rowspan="5">
+                    <div id="ConentlistBoxEmail">
+                        <div>
+                            <label style="font-size: 12pt; font-weight: bold; margin-left: 10px;">Danh sách Email Import</label>
+                            <br />
+                            <dx:ASPxCheckBox ID="ASPxCheckBox1" runat="server" Text="Select All" ClientInstanceName="cbAll" CheckState="Unchecked">
+                                <ClientSideEvents CheckedChanged="OnCbAllCheckedChanged" />
+                            </dx:ASPxCheckBox>
+                            <br />
+                            <div id="ct_listCheckBoxEmail">
+                                <dx:ASPxCheckBoxList Border-BorderStyle="None" ID="checkBoxListEmail" runat="server" RepeatColumns="1" RepeatLayout="Table">
+                                    <ClientSideEvents SelectedIndexChanged="cbList_SelectedIndexChanged" />
+                                </dx:ASPxCheckBoxList>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:FileUpload ID="FileUpload1" runat="server" class="marginControl" />
+
+                </td>
+                <td>
+                    <asp:Button ID="btnUpload" class="btn btn-primary btn-sm marginControl" runat="server" Text="Upload" OnClick="btnUpload_Click" />
+                    <asp:Label ID="txtNameFileUpload" runat="server">(File excel .xls, .xlsx)</asp:Label>
+                </td>
+                <td>
+                    <asp:Button ID="btnImportList" class="btn btn-success btn-sm marginControl" runat="server" Text="Import list email" OnClick="btnImportList_Click" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="width:100px">Subject</span>
+                        <input runat="server" type="text" id="ip_txt_subject" class="form-control" style="min-width:700px" placeholder="Nhập tiêu đề mail" aria-describedby="basic-addon1">
+                    </div>
+                </td>
+            </tr>
+            <tr>    
+                <td colspan="3">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="12" id="txt_content_mail" style="width:800px" placeholder="Nhập nội dung email..." runat="server"></textarea>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:Button ID="btnSendMail" class="btn btn-success" runat="server" Text="Gửi Email đơn" OnClick="btnSendMail_Click" />
+                </td>
+                <td>
+                    <asp:Button ID="btnSendListMail" class="btn btn-success" runat="server" Text="Gửi theo danh sách" OnClick="btnSendListMail_Click" />
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
     </div>
 </asp:Content>

@@ -411,7 +411,6 @@
     <Compile Include="Models\EmailOwn.cs">
       <DependentUpon>SendMailModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailSend.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LogSendEmail.cs">
       <DependentUpon>SendMailModel.tt</DependentUpon>

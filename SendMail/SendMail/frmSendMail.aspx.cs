@@ -10,6 +10,9 @@ using System.Data;
 using DevExpress.Web;
 using System.Web.Security;
 using SendMail.Util;
+using System.Collections.Generic;
+using SendMail.Business;
+using System.Linq;
 
 namespace SendMail
 {
@@ -45,30 +48,37 @@ namespace SendMail
         {
             try
             {
-                EmailSend email = new EmailSend();
-                email.fromEmail = ip_txt_from_email.Value;
-                email.toEmail = ip_txt_to_email.Value;
-                email.passWordSendMail = ip_txt_pass_email.Value;
-                email.subject = ip_txt_subject.Value;
-                email.body = txt_content_mail.Value;
-
-                if (radio_service_google.Checked)
+                using (SendMailEntities db = new SendMailEntities())
                 {
-                    GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.subject
-                                                                                                , email.body
-                                                                                                , email.fromEmail
-                                                                                                , email.toEmail));
+                    ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+                    ListEditItem cmbcmbContactselectedItem = cmbContact.SelectedItem;
+                    string toEmail = cmbContact.Text;
+                    Int64 IdEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                    EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
+                    LogSendEmail email = new LogSendEmail();
+                    email.Subject = ip_txt_subject.Value;
+                    email.Body = txt_content_mail.Value;
+                    email.Contact.Email = toEmail;
+                    if (radio_service_google.Checked)
+                    {
+                        GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
+                                                                                                    , email.Body
+                                                                                                    , emailOwn.Email
+                                                                                                    , toEmail));
+                    }
+                    else if (radio_service_stpm.Checked)
+                    {
+                        STPMService.SendMail(emailOwn.Email
+                                            , Cryption.Decrypt(emailOwn.Password)
+                                            , toEmail
+                                            , email.Subject
+                                            , email.Body);
+                    }
+                    db.LogSendEmails.Add(email);
+                    db.SaveChanges();
+                    string message = "Gửi email thành công";
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + message + "');", true);
                 }
-                else if (radio_service_stpm.Checked)
-                {
-                    STPMService.SendMail(email.fromEmail
-                                        , Cryption.Decrypt(email.passWordSendMail)
-                                        , email.toEmail
-                                        , email.subject
-                                        , email.body);
-                }
-                string message = "Gửi email thành công";
-                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + message + "');", true);
             }
             catch (Exception v_e)
             {
@@ -93,7 +103,7 @@ namespace SendMail
                 else
                 {
                     String message = "Bạn chưa chọn file hoặc file này đang được mở!";
-                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('"+ message+"');", true);
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + message + "');", true);
                 }
             }
             catch (Exception v_e)
@@ -107,19 +117,37 @@ namespace SendMail
         {
             try
             {
+                List<Contact> lst_contact = new List<Contact>();
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
                 string FileName = txtNameFileUpload.Text;
                 string Extension = Path.GetExtension(FileName);
                 string FilePath = Server.MapPath(FolderPath + FileName);
 
                 DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
-               
+
                 checkBoxListEmail.DataSource = dt;
                 checkBoxListEmail.DataMember = "Email";
                 checkBoxListEmail.TextField = "Email";
                 checkBoxListEmail.DataBind();
                 checkBoxListEmail.SelectAll();
-                //checkBoxSelectAll.Checked = true;
+
+                //check save contact new
+                SelectedValueCollection listEmail = checkBoxListEmail.SelectedValues;
+                foreach (String email in listEmail)
+                {
+                    if (!ContactBusiness.checkContactIsExist(email))
+                    {
+                        Contact contact = new Contact();
+                        contact.Email = email;
+                        lst_contact.Add(contact);
+                    }
+                }
+
+                using (SendMailEntities db = new SendMailEntities())
+                {
+                    db.Contacts.AddRange(lst_contact);
+                    db.SaveChanges();
+                }
             }
             catch (Exception v_e)
             {
@@ -132,40 +160,48 @@ namespace SendMail
         {
             try
             {
-                EmailSend email = new EmailSend();
-                email.fromEmail = ip_txt_from_email.Value;
-                email.toEmail = ip_txt_to_email.Value;
-                email.passWordSendMail = ip_txt_pass_email.Value;
-                email.subject = ip_txt_subject.Value;
-                email.body = txt_content_mail.Value;
-                SelectedValueCollection listEmail = checkBoxListEmail.SelectedValues;
-                progressBar.Maximum = listEmail.Count;
-                progressBar.Minimum = 0;
-                if (radio_service_google.Checked)
+                using (SendMailEntities db = new SendMailEntities())
                 {
-                    foreach (string item in listEmail)
-                    {
-                        email.toEmail = item;
-                        GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.subject
-                                                                                                , email.body
-                                                                                                , email.fromEmail
-                                                                                                , email.toEmail));
-                    }
-                }
-                else if (radio_service_stpm.Checked)
-                {
+                    ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+                    ListEditItem cmbcmbContactselectedItem = cmbContact.SelectedItem;
+                    Int64 IdEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                    EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
+
+                    List<LogSendEmail> lst_logEmail = new List<LogSendEmail>();
+
+                    SelectedValueCollection listEmail = checkBoxListEmail.SelectedValues;
                     foreach (String item in listEmail)
                     {
-                        email.toEmail = item;
-                        STPMService.SendMail(email.fromEmail
-                                        , email.passWordSendMail
-                                        , email.toEmail
-                                        , email.subject
-                                        , email.body);
-                        progressBar.Position = progressBar.Position + 1;
+                        LogSendEmail email = new LogSendEmail();
+                        email.Subject = ip_txt_subject.Value;
+                        email.Body = txt_content_mail.Value;
+                        email.Contact.Email = item;
+                        lst_logEmail.Add(email);
+                        if (radio_service_google.Checked)
+                        {
+
+                          
+                            GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
+                                                                                                    , email.Body
+                                                                                                    , emailOwn.Email
+                                                                                                    , item));
+
+                        }
+                        else if (radio_service_stpm.Checked)
+                        {
+                            STPMService.SendMail(emailOwn.Email
+                                            , Cryption.Decrypt(emailOwn.Password)
+                                            , item
+                                            , email.Subject
+                                            , email.Body);
+                        }
+
                     }
+                    db.LogSendEmails.AddRange(lst_logEmail);
+                    db.SaveChanges();
                     ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Gửi thành công!" + "');", true);
                 }
+                
             }
             catch (Exception v_e)
             {
@@ -195,7 +231,7 @@ namespace SendMail
             }
         }
 
-            #endregion
+        #endregion
 
-        }
+    }
 }

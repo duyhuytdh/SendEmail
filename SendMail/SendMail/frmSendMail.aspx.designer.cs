@@ -31,31 +31,58 @@ namespace SendMail {
         protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton radio_service_stpm;
         
         /// <summary>
-        /// ip_txt_from_email control.
+        /// cmbEmailOwn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText ip_txt_from_email;
+        protected global::DevExpress.Web.ASPxComboBox cmbEmailOwn;
         
         /// <summary>
-        /// ip_txt_pass_email control.
+        /// EmailOwnDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword ip_txt_pass_email;
+        protected global::System.Web.UI.WebControls.SqlDataSource EmailOwnDataSource;
         
         /// <summary>
-        /// ip_txt_to_email control.
+        /// cmbContact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText ip_txt_to_email;
+        protected global::DevExpress.Web.ASPxComboBox cmbContact;
+        
+        /// <summary>
+        /// ContactDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource ContactDataSource;
+        
+        /// <summary>
+        /// ASPxCheckBox1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBox ASPxCheckBox1;
+        
+        /// <summary>
+        /// checkBoxListEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxCheckBoxList checkBoxListEmail;
         
         /// <summary>
         /// FileUpload1 control.
@@ -128,32 +155,5 @@ namespace SendMail {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSendListMail;
-        
-        /// <summary>
-        /// progressBar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxProgressBar progressBar;
-        
-        /// <summary>
-        /// ASPxCheckBox1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBox ASPxCheckBox1;
-        
-        /// <summary>
-        /// checkBoxListEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxCheckBoxList checkBoxListEmail;
     }
 }
