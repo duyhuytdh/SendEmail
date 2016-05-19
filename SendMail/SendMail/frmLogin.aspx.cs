@@ -47,6 +47,8 @@ namespace SendMail
                             FormsAuthentication.RedirectFromLoginPage(txt_account.Value,rememberMe.Checked);
                             FormsAuthentication.SetAuthCookie(txt_account.Value, true);
                             Debugger.Log(1,"Login"," "+this.User.Identity.IsAuthenticated);
+                            mGlobal.AccountName = this.User.Identity.Name;
+                            mGlobal.UserID = userId;
                             break;
                     }
                 }

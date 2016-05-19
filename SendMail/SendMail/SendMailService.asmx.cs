@@ -56,11 +56,7 @@ namespace SendMail
                         lst_emailContent.Add(emailContent);
 
                         //get contact
-                        Contact contact = db.Contacts.FirstOrDefault(x=>x.Email==item.Email);
-
-                        //get UserID
-                        
-                        //User user = db.Users.FirstOrDefault(x => x.AccountName == userName);
+                        Contact contact = db.Contacts.FirstOrDefault(x => x.Email == item.Email);
 
                         //save log send email
                         LogSendEmail log = new LogSendEmail();
@@ -74,7 +70,7 @@ namespace SendMail
                         log.StatusSend = true;
                         log.IDEmailOwn = emailOwn.ID;
                         log.TypeServiceUsed = "STPM";
-                        log.UserID = 1;
+                        log.UserID = mGlobal.UserID;
 
                         lst_logEndEmail.Add(log);
 

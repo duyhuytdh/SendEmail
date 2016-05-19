@@ -9,6 +9,7 @@ using SendMail.Util;
 using System.Data;
 using DevExpress.Web;
 using System.Web.Security;
+using SendMail.Util;
 
 namespace SendMail
 {
@@ -61,7 +62,7 @@ namespace SendMail
                 else if (radio_service_stpm.Checked)
                 {
                     STPMService.SendMail(email.fromEmail
-                                        , email.passWordSendMail
+                                        , Cryption.Decrypt(email.passWordSendMail)
                                         , email.toEmail
                                         , email.subject
                                         , email.body);

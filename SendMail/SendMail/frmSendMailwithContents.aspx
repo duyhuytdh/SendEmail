@@ -129,7 +129,7 @@
                 <tr>
                     <td colspan="2">
                         <div class="gridView">
-                            <dx:ASPxGridView ID="gridView" runat="server" csClass="gridview" EnableTheming="True" Theme="Default" DataSourceID="EmailDataSource" AutoGenerateColumns="False" KeyFieldName="ID" Width="1040px">
+                            <dx:ASPxGridView ID="gridView" runat="server" csClass="gridview" EnableTheming="True" Theme="Default" DataSourceID="EmailDataSource" AutoGenerateColumns="False" KeyFieldName="ID" Width="1040px" OnRowInserted="gridView_RowInserted">
                                 <Columns>
                                     <dx:GridViewCommandColumn ShowDeleteButton="True" ShowEditButton="True" ShowNewButtonInHeader="True" VisibleIndex="0" Width="50px">
                                     </dx:GridViewCommandColumn>

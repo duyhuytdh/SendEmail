@@ -482,6 +482,7 @@
     <Compile Include="Util\HandleException.cs" />
     <Compile Include="Util\ImportExcel.cs" />
     <Compile Include="Util\TempHtmlReader.cs" />
+    <Compile Include="Util\Global.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

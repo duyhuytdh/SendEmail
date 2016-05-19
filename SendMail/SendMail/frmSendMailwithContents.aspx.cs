@@ -85,10 +85,10 @@ namespace SendMail
 
             cmbCampaign.DataBind();
             cmbCampaign.Items.Insert(0, new ListEditItem("None"));
-            
+
 
             cmbEmailOwn.DataBind();
- 
+
             if (!IsPostBack && !IsCallback)
             {
                 cmbCampaign.SelectedIndex = 0;
@@ -128,7 +128,8 @@ namespace SendMail
         {
             try
             {
-
+                ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
+                ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
                 SendMailEntities db = new SendMailEntities();
                 List<TempSendEmail> listTemp = new List<TempSendEmail>();
                 List<Contact> lst_contact = new List<Contact>();
@@ -140,7 +141,7 @@ namespace SendMail
                 if (FileName != "")
                 {
                     //delete data in table temporary
-                    db.Database.ExecuteSqlCommand("TRUNCATE TABLE TempSendEmails");
+                    db.Database.ExecuteSqlCommand("Delete from TempSendEmails where IDUser = " + mGlobal.UserID);
                     DataTable dt = ImportExcel.ImportExcel2DataTable(FilePath, Extension);
                     foreach (DataRow dr in dt.Rows)
                     {
@@ -149,6 +150,13 @@ namespace SendMail
                         temp.Subject = dr["Subject"].ToString();
                         temp.ContentEmail = dr["Content"].ToString();
                         temp.Email = dr["Email"].ToString();
+                        temp.IDUser = mGlobal.UserID;
+                        temp.TimeSend = DateTime.Now;
+                        temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
+                         if (cmbCampaign.SelectedIndex > 0)
+                         {
+                                temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+                          }
                         listTemp.Add(temp);
                         //check contact, if is not exist then save to db
                         if (!ContactBusiness.checkContactIsExist(temp.Email))
@@ -176,7 +184,7 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
+                //Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 
@@ -184,10 +192,17 @@ namespace SendMail
         {
             try
             {
-                EmailSend email = new EmailSend();
+                SendMailEntities db = new SendMailEntities();
+                List<EmailContent> lst_emailContent = new List<EmailContent>();
+                List<LogSendEmail> lst_logEndEmail = new List<LogSendEmail>();
+                List<TempSendEmail> lst_TempSendEmail = new List<TempSendEmail>();
                 ListEditItem selectedItem = cmbEmailOwn.SelectedItem;
-                email.fromEmail = cmbEmailOwn.Text;
-                email.passWordSendMail = Cryption.Decrypt(selectedItem.GetValue("Password").ToString());
+                EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == Int64.Parse(selectedItem.GetValue("ID").ToString()));
+                lst_TempSendEmail = db.TempSendEmails.Where(x=>x.IDUser == mGlobal.UserID).ToList();
+                
+               
+                //email.fromEmail = cmbEmailOwn.Text;
+                //email.passWordSendMail = Cryption.Decrypt(selectedItem.GetValue("Password").ToString());
 
                 if (radio_service_google.Checked)
                 {
@@ -195,28 +210,50 @@ namespace SendMail
                 }
                 else if (radio_service_stpm.Checked)
                 {
-                    for (int i = 0; i < gridView.VisibleRowCount; i++)
+                    foreach (TempSendEmail item in lst_TempSendEmail)
                     {
-                        if (gridView.GetRowLevel(i) == gridView.GroupCount)
-                        {
-                            object keyValue = gridView.GetRowValues(i, new string[] { DataField.Email, DataField.Subject, DataField.Content });
-                            if (keyValue != null)
-                            {
-                                Array arr = (Array)keyValue;
-                                email.toEmail = arr.GetValue(0).ToString();
-                                email.subject = arr.GetValue(1).ToString();
-                                email.body = arr.GetValue(2).ToString();
 
-                                STPMService.SendMail(email.fromEmail
-                                       , email.passWordSendMail
-                                       , email.toEmail
-                                       , email.subject
-                                       , email.body);
+                        EmailContent emailContent = new EmailContent();
+
+                        emailContent.Subject = item.Subject;
+                        emailContent.ContentEmail = item.ContentEmail;
+                        lst_emailContent.Add(emailContent);
+
+                        //get contact
+                        Contact contact = db.Contacts.FirstOrDefault(x => x.Email == item.Email);
+
+                        //get UserID
+
+                        //User user = db.Users.FirstOrDefault(x => x.AccountName == userName);
+
+                        //save log send email
+                            LogSendEmail log = new LogSendEmail();
+                            if (item.IDCampaign != null)
+                            {
+                                log.CampaignID = item.IDCampaign;
                             }
 
-                        }
+                            log.ContactID = contact.ContactID;
+                            log.EmailID = emailContent.EmailID;
+                            log.StatusSend = true;
+                            log.IDEmailOwn = Int64.Parse(item.IDEmailOwn.ToString());
+                            log.TypeServiceUsed = mGlobal.STPM;
+                            log.UserID = mGlobal.UserID;
+
+                            lst_logEndEmail.Add(log);
+
+
+                            STPMService.SendMail(emailOwn.Email
+                               , Cryption.Decrypt(emailOwn.Password)
+                               , item.Email
+                               , item.Subject
+                               , item.ContentEmail);
+                        
                     }
 
+                    db.EmailContents.AddRange(lst_emailContent);
+                    db.LogSendEmails.AddRange(lst_logEndEmail);
+                    db.SaveChanges();
                     ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Gửi thành công!" + "');", true);
                 }
             }
@@ -292,6 +329,28 @@ namespace SendMail
         protected void cmbEmailOwn_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void gridView_RowInserted(object sender, DevExpress.Web.Data.ASPxDataInsertedEventArgs e)
+        {
+            try
+            {
+                using (SendMailEntities db = new SendMailEntities())
+                {
+                    if (ContactBusiness.checkContactIsExist(e.NewValues["Email"].ToString().Trim()))
+                    {
+                        Contact contact = new Contact();
+                        contact.Email = e.NewValues["Email"].ToString().Trim();
+                        db.Contacts.Add(contact);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
