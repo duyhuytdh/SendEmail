@@ -9,14 +9,19 @@
         }
 
         .cmbEmailOwn {
-            width:300px !important;
+            width: 300px !important;
         }
 
         .cmbContact {
-            width:300px !important;
+            width: 300px !important;
         }
+
+        .cmbCampaign {
+            width: 300px !important;
+        }
+
         .listBoxEmail {
-            width: 200px !important;
+            width: 250px !important;
             height: 440px !important;
         }
 
@@ -27,7 +32,7 @@
         }
 
         #ct_listCheckBoxEmail {
-            width: 220px;
+            width: 240px;
             height: 440px;
             border-style: double;
             border-width: 1px;
@@ -54,9 +59,9 @@
     </script>
 
     <div id="content" style="width: 1200px !important; display: inline-block; float: right;">
-        <table table class="table_content" style="width: 1200px">
+        <table class="table_content" style="width: 1200px">
             <tr>
-                <td colspan="4">
+                <td colspan="1">
                     <div id="group_radio_select_service">
                         <label for="comment">Chọn service: </label>
                         <label class="radio-inline">
@@ -64,6 +69,22 @@
                         <label class="radio-inline">
                             <input runat="server" type="radio" name="radio_Service" id="radio_service_stpm">STPM Service</label>
                     </div>
+                </td>
+                <td colspan="3">
+                    <dx:ASPxComboBox runat="server" ID="cmbCampaign" IncrementalFilteringMode="StartsWith"
+                        DataSourceID="CampaignDataSource" TextField="CampaignName" ValueField="CampaignID" Caption="Chiến dịch:"
+                        EnableSynchronization="False" CssClass="cmbCampaign">
+                        <ClientSideEvents SelectedIndexChanged="function(s, e) { OnCountryChanged(s); }" />
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="CampaignID" Visible="False"></dx:ListBoxColumn>
+                            <dx:ListBoxColumn FieldName="CampaignName"></dx:ListBoxColumn>
+                        </Columns>
+                    </dx:ASPxComboBox>
+                    <asp:SqlDataSource runat="server" ID="CampaignDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [CampaignID], [CampaignName] FROM [Campaign] WHERE ([isActive] = @isActive)">
+                        <SelectParameters>
+                            <asp:Parameter DefaultValue="true" Name="isActive" Type="Boolean"></asp:Parameter>
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </td>
             </tr>
             <tr>
@@ -79,7 +100,7 @@
                     <asp:SqlDataSource runat="server" ID="EmailOwnDataSource" ConnectionString='<%$ ConnectionStrings:SendMailConnectionString %>' SelectCommand="SELECT [ID], [Email], [Password] FROM [EmailOwn]"></asp:SqlDataSource>
                 </td>
                 <td colspan="2">
-                    <dx:ASPxComboBox ID="cmbContact" runat="server" DataSourceID="ContactDataSource" Caption="Email nhận:" CssClass="cmbContact">
+                    <dx:ASPxComboBox ID="cmbContact" runat="server" DataSourceID="ContactDataSource" ValueField="ContactID" Caption="Email nhận:" CssClass="cmbContact">
                         <Columns>
                             <dx:ListBoxColumn FieldName="ContactID" Visible="False"></dx:ListBoxColumn>
                             <dx:ListBoxColumn FieldName="Email"></dx:ListBoxColumn>
@@ -122,15 +143,15 @@
             <tr>
                 <td colspan="3">
                     <div class="input-group">
-                        <span class="input-group-addon" style="width:100px">Subject</span>
-                        <input runat="server" type="text" id="ip_txt_subject" class="form-control" style="min-width:700px" placeholder="Nhập tiêu đề mail" aria-describedby="basic-addon1">
+                        <span class="input-group-addon" style="width: 100px">Subject</span>
+                        <input runat="server" type="text" id="ip_txt_subject" class="form-control" style="min-width: 700px" placeholder="Nhập tiêu đề mail" aria-describedby="basic-addon1">
                     </div>
                 </td>
             </tr>
-            <tr>    
+            <tr>
                 <td colspan="3">
                     <div class="form-group">
-                        <textarea class="form-control" rows="12" id="txt_content_mail" style="width:800px" placeholder="Nhập nội dung email..." runat="server"></textarea>
+                        <textarea class="form-control" rows="12" id="txt_content_mail" style="width: 800px" placeholder="Nhập nội dung email..." runat="server"></textarea>
                     </div>
                 </td>
                 <td></td>

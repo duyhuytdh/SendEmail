@@ -41,6 +41,12 @@ namespace SendMail
                 createEmail = new CreateMail();
                 GoogleMailService.initService();
                 radio_service_stpm.Checked = true;
+                
+                if (!IsPostBack && !IsCallback)
+                {
+                    cmbCampaign.SelectedIndex = 0;
+                    cmbEmailOwn.SelectedIndex = 1;
+                }
             }
         }
 
@@ -52,28 +58,59 @@ namespace SendMail
                 {
                     ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
                     ListEditItem cmbcmbContactselectedItem = cmbContact.SelectedItem;
-                    string toEmail = cmbContact.Text;
+                    ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
+                    string toEmail = cmbcmbContactselectedItem.GetValue("Email").ToString();
+                    string fromEmail = cmbEmailOwnselectedItem.GetValue("Email").ToString();
+                    string password = Cryption.Decrypt(cmbEmailOwnselectedItem.GetValue("Password").ToString());
                     Int64 IdEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
-                    EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
+                    //EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
                     LogSendEmail email = new LogSendEmail();
                     email.Subject = ip_txt_subject.Value;
                     email.Body = txt_content_mail.Value;
-                    email.Contact.Email = toEmail;
+                    email.ContactID = Int64.Parse(cmbcmbContactselectedItem.GetValue("ContactID").ToString());
+                    email.UserID = mGlobal.UserID;
+                    email.IDEmailOwn = IdEmailOwn;
+                    email.CampaignID = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+
                     if (radio_service_google.Checked)
                     {
-                        GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
+                        email.TypeServiceUsed = mGlobal.GOOGLE;
+                        try
+                        {
+                            GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
                                                                                                     , email.Body
-                                                                                                    , emailOwn.Email
+                                                                                                    , fromEmail
                                                                                                     , toEmail));
+                            email.StatusSend = true;
+                        }
+                        catch (Exception)
+                        {
+                            email.StatusSend = false;
+                            
+                        }
+                        
+                        
                     }
                     else if (radio_service_stpm.Checked)
                     {
-                        STPMService.SendMail(emailOwn.Email
-                                            , Cryption.Decrypt(emailOwn.Password)
-                                            , toEmail
-                                            , email.Subject
-                                            , email.Body);
+                        email.TypeServiceUsed = mGlobal.STPM;
+                        try
+                        {
+                            STPMService.SendMail(fromEmail
+                                           , password
+                                           , toEmail
+                                           , email.Subject
+                                           , email.Body);
+                            email.StatusSend = true;
+                        }
+                        catch (Exception)
+                        {
+
+                            email.StatusSend = false;
+                        }
+                       
                     }
+                    email.TimeSend = DateTime.Now;
                     db.LogSendEmails.Add(email);
                     db.SaveChanges();
                     string message = "Gửi email thành công";
@@ -83,7 +120,6 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 
@@ -109,7 +145,6 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 
@@ -135,7 +170,7 @@ namespace SendMail
                 SelectedValueCollection listEmail = checkBoxListEmail.SelectedValues;
                 foreach (String email in listEmail)
                 {
-                    if (!ContactBusiness.checkContactIsExist(email))
+                    if (!ContactBusiness.checkContactIsExist(email) && email!="")
                     {
                         Contact contact = new Contact();
                         contact.Email = email;
@@ -152,7 +187,6 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 
@@ -163,39 +197,67 @@ namespace SendMail
                 using (SendMailEntities db = new SendMailEntities())
                 {
                     ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
-                    ListEditItem cmbcmbContactselectedItem = cmbContact.SelectedItem;
+                    ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
                     Int64 IdEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
-                    EmailOwn emailOwn = db.EmailOwns.FirstOrDefault(x => x.ID == IdEmailOwn);
-
+                    string fromEmail = cmbEmailOwnselectedItem.GetValue("Email").ToString();
+                    string password = Cryption.Decrypt(cmbEmailOwnselectedItem.GetValue("Password").ToString());
+                    
                     List<LogSendEmail> lst_logEmail = new List<LogSendEmail>();
 
                     SelectedValueCollection listEmail = checkBoxListEmail.SelectedValues;
                     foreach (String item in listEmail)
                     {
+                        //get contact
+                        Contact contact = db.Contacts.FirstOrDefault(x=>x.Email== item);
                         LogSendEmail email = new LogSendEmail();
                         email.Subject = ip_txt_subject.Value;
                         email.Body = txt_content_mail.Value;
-                        email.Contact.Email = item;
-                        lst_logEmail.Add(email);
+                        email.ContactID = contact.ContactID;
+                        email.UserID = mGlobal.UserID;
+                        email.TimeSend = DateTime.Now;
+                        email.IDEmailOwn = IdEmailOwn;
+                        email.CampaignID = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
+
                         if (radio_service_google.Checked)
                         {
+                            email.TypeServiceUsed = mGlobal.GOOGLE;
+                            try
+                            {
+                                GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
+                                                                                                            , email.Body
+                                                                                                            , fromEmail
+                                                                                                            , item));
+                                email.StatusSend = true;
+                            }
+                            catch (Exception)
+                            {
 
+                                email.StatusSend = false;
+                            }
                           
-                            GoogleMailService.sendMail("duyhuytdh@gmail.com", createEmail.createMessage(email.Subject
-                                                                                                    , email.Body
-                                                                                                    , emailOwn.Email
-                                                                                                    , item));
-
+                        
+                            
                         }
                         else if (radio_service_stpm.Checked)
                         {
-                            STPMService.SendMail(emailOwn.Email
-                                            , Cryption.Decrypt(emailOwn.Password)
-                                            , item
-                                            , email.Subject
-                                            , email.Body);
+                            email.TypeServiceUsed = mGlobal.STPM;
+                            try
+                            {
+                                STPMService.SendMail(fromEmail
+                                                    , password
+                                                    , item
+                                                    , email.Subject
+                                                    , email.Body);
+                                email.StatusSend = true;
+                            }
+                            catch (Exception)
+                            {
+                                email.StatusSend = false;
+                            }
+                              
                         }
 
+                        lst_logEmail.Add(email);
                     }
                     db.LogSendEmails.AddRange(lst_logEmail);
                     db.SaveChanges();
@@ -206,7 +268,6 @@ namespace SendMail
             catch (Exception v_e)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + v_e + "');", true);
-                Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
 

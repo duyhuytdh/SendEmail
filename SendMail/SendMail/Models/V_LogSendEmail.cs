@@ -12,14 +12,25 @@ namespace SendMail.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Campaign
+    public partial class V_LogSendEmail
     {
-        public long CampaignID { get; set; }
+        public long SendMailID { get; set; }
+        public long UserID { get; set; }
+        public long ContactID { get; set; }
+        public System.DateTime TimeSend { get; set; }
+        public bool StatusSend { get; set; }
+        public long IDEmailOwn { get; set; }
+        public string TypeServiceUsed { get; set; }
+        public Nullable<long> CampaignID { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
         public string CampaignName { get; set; }
         public Nullable<System.DateTime> TimeBegin { get; set; }
         public Nullable<System.DateTime> TimeEnd { get; set; }
-        public Nullable<bool> isActive { get; set; }
-        public string Description { get; set; }
         public Nullable<System.DateTime> TimeSchedule { get; set; }
+        public Nullable<bool> isActive { get; set; }
+        public string EmailContact { get; set; }
+        public string EmailSend { get; set; }
+        public string AccountName { get; set; }
     }
 }

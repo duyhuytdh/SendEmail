@@ -17,5 +17,24 @@ namespace SendMail
                 FormsAuthentication.RedirectToLoginPage();
             }
         }
+
+        protected void gridView_CustomUnboundColumnData(object sender, DevExpress.Web.ASPxGridViewColumnDataEventArgs e)
+        {
+            if (e.Column.FieldName == "Number")
+            {
+                e.Value = string.Format("{0}", e.ListSourceRowIndex +1);
+            }
+        }
+
+        protected void date_tu_ngay_ButtonClick(object source, DevExpress.Web.ButtonEditClickEventArgs e)
+        {
+            gridView.DataBind();
+        }
+
+        protected void date_den_ngay_ButtonClick(object source, DevExpress.Web.ButtonEditClickEventArgs e)
+        {
+            gridView.DataBind();
+        }
+
     }
 }

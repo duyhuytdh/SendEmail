@@ -53,10 +53,7 @@ namespace SendMail
                             temp.Subject = arr.GetValue(2).ToString();
                             temp.ContentEmail = arr.GetValue(3).ToString();
                             temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
-                            if (cmbCampaign.SelectedIndex > 0)
-                            {
-                                temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
-                            }
+                            temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
                             temp.TimeSchedule = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
                             db.TempScheduleSendEmails.Add(temp);
                             db.SaveChanges();
@@ -84,7 +81,6 @@ namespace SendMail
             radio_service_stpm.Checked = true;
 
             cmbCampaign.DataBind();
-            cmbCampaign.Items.Insert(0, new ListEditItem("None"));
 
 
             cmbEmailOwn.DataBind();
@@ -219,10 +215,7 @@ namespace SendMail
 
                         //save log send email
                         LogSendEmail log = new LogSendEmail();
-                        if (cmbCampaign.SelectedIndex > 0)
-                        {
-                            log.CampaignID = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
-                        }
+                        log.CampaignID = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
 
                         log.ContactID = contact.ContactID;
                         log.Subject = item.Subject;

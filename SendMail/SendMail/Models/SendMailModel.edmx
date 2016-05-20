@@ -14,6 +14,28 @@
           <EntitySet Name="TempScheduleSendEmails" EntityType="SendMailModel.Store.TempScheduleSendEmails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TempSendEmails" EntityType="SendMailModel.Store.TempSendEmails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="SendMailModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="V_LogSendEmail" EntityType="SendMailModel.Store.V_LogSendEmail" store:Type="Views" store:Schema="dbo" store:Name="V_LogSendEmail">
+            <DefiningQuery>SELECT 
+      [V_LogSendEmail].[SendMailID] AS [SendMailID], 
+      [V_LogSendEmail].[UserID] AS [UserID], 
+      [V_LogSendEmail].[ContactID] AS [ContactID], 
+      [V_LogSendEmail].[TimeSend] AS [TimeSend], 
+      [V_LogSendEmail].[StatusSend] AS [StatusSend], 
+      [V_LogSendEmail].[IDEmailOwn] AS [IDEmailOwn], 
+      [V_LogSendEmail].[TypeServiceUsed] AS [TypeServiceUsed], 
+      [V_LogSendEmail].[CampaignID] AS [CampaignID], 
+      [V_LogSendEmail].[Subject] AS [Subject], 
+      [V_LogSendEmail].[Body] AS [Body], 
+      [V_LogSendEmail].[CampaignName] AS [CampaignName], 
+      [V_LogSendEmail].[TimeBegin] AS [TimeBegin], 
+      [V_LogSendEmail].[TimeEnd] AS [TimeEnd], 
+      [V_LogSendEmail].[TimeSchedule] AS [TimeSchedule], 
+      [V_LogSendEmail].[isActive] AS [isActive], 
+      [V_LogSendEmail].[EmailContact] AS [EmailContact], 
+      [V_LogSendEmail].[EmailSend] AS [EmailSend], 
+      [V_LogSendEmail].[AccountName] AS [AccountName]
+      FROM [dbo].[V_LogSendEmail] AS [V_LogSendEmail]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_SendMail_Contact" Association="SendMailModel.Store.FK_SendMail_Contact">
             <End Role="Contact" EntitySet="Contact" />
             <End Role="LogSendEmail" EntitySet="LogSendEmail" />
@@ -29,11 +51,11 @@
           </Key>
           <Property Name="CampaignID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CampaignName" Type="nvarchar" MaxLength="500" />
-          <Property Name="TimeBegin" Type="date" />
-          <Property Name="TimeEnd" Type="date" />
+          <Property Name="TimeBegin" Type="datetime" />
+          <Property Name="TimeEnd" Type="datetime" />
           <Property Name="isActive" Type="bit" />
-          <Property Name="TimeSend" Type="time" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeSchedule" Type="datetime" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -124,6 +146,40 @@
           <Property Name="isAdmin" Type="bit" Nullable="false" />
           <Property Name="LastLogin" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'SendMail.dbo.V_LogSendEmail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="V_LogSendEmail">
+          <Key>
+            <PropertyRef Name="SendMailID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="TimeSend" />
+            <PropertyRef Name="StatusSend" />
+            <PropertyRef Name="IDEmailOwn" />
+            <PropertyRef Name="EmailContact" />
+            <PropertyRef Name="EmailSend" />
+            <PropertyRef Name="AccountName" />
+          </Key>
+          <Property Name="SendMailID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ContactID" Type="bigint" Nullable="false" />
+          <Property Name="TimeSend" Type="datetime" Nullable="false" />
+          <Property Name="StatusSend" Type="bit" Nullable="false" />
+          <Property Name="IDEmailOwn" Type="bigint" Nullable="false" />
+          <Property Name="TypeServiceUsed" Type="nvarchar" MaxLength="20" />
+          <Property Name="CampaignID" Type="bigint" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="500" />
+          <Property Name="Body" Type="text" />
+          <Property Name="CampaignName" Type="nvarchar" MaxLength="500" />
+          <Property Name="TimeBegin" Type="datetime" />
+          <Property Name="TimeEnd" Type="datetime" />
+          <Property Name="TimeSchedule" Type="datetime" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="EmailContact" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EmailSend" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="AccountName" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
         <Association Name="FK_SendMail_Contact">
           <End Role="Contact" Type="SendMailModel.Store.Contact" Multiplicity="1" />
           <End Role="LogSendEmail" Type="SendMailModel.Store.LogSendEmail" Multiplicity="*" />
@@ -169,6 +225,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="LogSendEmail" EntitySet="LogSendEmails" />
           </AssociationSet>
+          <EntitySet Name="V_LogSendEmail" EntityType="SendMailModel.V_LogSendEmail" />
         </EntityContainer>
         <EntityType Name="Campaign">
           <Key>
@@ -176,11 +233,11 @@
           </Key>
           <Property Type="Int64" Name="CampaignID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="CampaignName" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="TimeBegin" Precision="0" />
-          <Property Type="DateTime" Name="TimeEnd" Precision="0" />
+          <Property Type="DateTime" Name="TimeBegin" Precision="3" />
+          <Property Type="DateTime" Name="TimeEnd" Precision="3" />
           <Property Type="Boolean" Name="isActive" />
-          <Property Type="Time" Name="TimeSend" Precision="7" />
           <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="TimeSchedule" Precision="3" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -299,6 +356,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="V_LogSendEmail">
+          <Key>
+            <PropertyRef Name="SendMailID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="TimeSend" />
+            <PropertyRef Name="StatusSend" />
+            <PropertyRef Name="IDEmailOwn" />
+            <PropertyRef Name="EmailContact" />
+            <PropertyRef Name="EmailSend" />
+            <PropertyRef Name="AccountName" />
+          </Key>
+          <Property Type="Int64" Name="SendMailID" Nullable="false" />
+          <Property Type="Int64" Name="UserID" Nullable="false" />
+          <Property Type="Int64" Name="ContactID" Nullable="false" />
+          <Property Type="DateTime" Name="TimeSend" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="StatusSend" Nullable="false" />
+          <Property Type="Int64" Name="IDEmailOwn" Nullable="false" />
+          <Property Type="String" Name="TypeServiceUsed" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="CampaignID" />
+          <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Body" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CampaignName" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="TimeBegin" Precision="3" />
+          <Property Type="DateTime" Name="TimeEnd" Precision="3" />
+          <Property Type="DateTime" Name="TimeSchedule" Precision="3" />
+          <Property Type="Boolean" Name="isActive" />
+          <Property Type="String" Name="EmailContact" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EmailSend" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AccountName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -308,8 +396,8 @@
           <EntitySetMapping Name="Campaigns">
             <EntityTypeMapping TypeName="SendMailModel.Campaign">
               <MappingFragment StoreEntitySet="Campaign">
+                <ScalarProperty Name="TimeSchedule" ColumnName="TimeSchedule" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="TimeSend" ColumnName="TimeSend" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
                 <ScalarProperty Name="TimeBegin" ColumnName="TimeBegin" />
@@ -411,6 +499,30 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="AccountName" ColumnName="AccountName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_LogSendEmail">
+            <EntityTypeMapping TypeName="SendMailModel.V_LogSendEmail">
+              <MappingFragment StoreEntitySet="V_LogSendEmail">
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="EmailSend" ColumnName="EmailSend" />
+                <ScalarProperty Name="EmailContact" ColumnName="EmailContact" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="TimeSchedule" ColumnName="TimeSchedule" />
+                <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+                <ScalarProperty Name="TimeBegin" ColumnName="TimeBegin" />
+                <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="CampaignID" ColumnName="CampaignID" />
+                <ScalarProperty Name="TypeServiceUsed" ColumnName="TypeServiceUsed" />
+                <ScalarProperty Name="IDEmailOwn" ColumnName="IDEmailOwn" />
+                <ScalarProperty Name="StatusSend" ColumnName="StatusSend" />
+                <ScalarProperty Name="TimeSend" ColumnName="TimeSend" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SendMailID" ColumnName="SendMailID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
