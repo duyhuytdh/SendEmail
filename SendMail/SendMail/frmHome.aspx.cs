@@ -16,24 +16,30 @@ namespace SendMail
             {
                 FormsAuthentication.RedirectToLoginPage();
             }
+            if (!IsPostBack)
+            {
+                DateTime date = DateTime.Now;
+                var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                date_tu_ngay.Value = firstDayOfMonth;
+                date_den_ngay.Value = lastDayOfMonth;
+            }
         }
 
         protected void gridView_CustomUnboundColumnData(object sender, DevExpress.Web.ASPxGridViewColumnDataEventArgs e)
         {
             if (e.Column.FieldName == "Number")
             {
-                e.Value = string.Format("{0}", e.ListSourceRowIndex +1);
+                e.Value = string.Format("{0}", e.ListSourceRowIndex + 1);
             }
         }
 
-        protected void date_tu_ngay_ButtonClick(object source, DevExpress.Web.ButtonEditClickEventArgs e)
+        protected void gridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
         {
-            gridView.DataBind();
-        }
-
-        protected void date_den_ngay_ButtonClick(object source, DevExpress.Web.ButtonEditClickEventArgs e)
-        {
-            gridView.DataBind();
+            if (e.Parameters == "databind")
+            {
+                gridView.DataBind();
+            }
         }
 
     }
