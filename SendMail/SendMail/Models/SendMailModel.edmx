@@ -120,6 +120,8 @@
           <Property Name="TimeSchedule" Type="datetime" />
           <Property Name="IDCampaign" Type="bigint" />
           <Property Name="IDUser" Type="bigint" />
+          <Property Name="JobName" Type="nvarchar" MaxLength="150" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="TempSendEmails">
           <Key>
@@ -305,6 +307,8 @@
           <Property Type="DateTime" Name="TimeSchedule" Precision="3" />
           <Property Type="Int64" Name="IDCampaign" />
           <Property Type="Int64" Name="IDUser" />
+          <Property Type="String" Name="JobName" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="JobGroup" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TempSendEmail">
           <Key>
@@ -463,6 +467,8 @@
           <EntitySetMapping Name="TempScheduleSendEmails">
             <EntityTypeMapping TypeName="SendMailModel.TempScheduleSendEmail">
               <MappingFragment StoreEntitySet="TempScheduleSendEmails">
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
                 <ScalarProperty Name="IDUser" ColumnName="IDUser" />
                 <ScalarProperty Name="IDCampaign" ColumnName="IDCampaign" />
                 <ScalarProperty Name="TimeSchedule" ColumnName="TimeSchedule" />

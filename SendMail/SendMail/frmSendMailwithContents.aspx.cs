@@ -20,6 +20,9 @@ namespace SendMail
     {
         #region Data Member
         CreateMail createEmail;
+        string CampaignName;
+        DateTime mdtSchedule;
+        
         #endregion
 
         #region Data structure
@@ -35,8 +38,16 @@ namespace SendMail
         #region Private Method
         private void saveTempScheduleSendEmail()
         {
+            
             ListEditItem cmbEmailOwnselectedItem = cmbEmailOwn.SelectedItem;
             ListEditItem cmbcmbCampaignselectedItem = cmbCampaign.SelectedItem;
+            CampaignName = cmbcmbCampaignselectedItem.GetValue("CampaignName").ToString();
+            mdtSchedule = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
+            string jobName = "Job" + mGlobal.AccountName + CampaignName + mdtSchedule;
+            string groupJobName = "GroupJob" + mGlobal.AccountName;
+            string triggerName = "Trigger" + jobName;
+            string triggerGroup = "TriggerGroup" + groupJobName;
+
             for (int i = 0; i < gridView.VisibleRowCount; i++)
             {
                 if (gridView.GetRowLevel(i) == gridView.GroupCount)
@@ -54,7 +65,10 @@ namespace SendMail
                             temp.ContentEmail = arr.GetValue(3).ToString();
                             temp.IDEmailOwn = Int64.Parse(cmbEmailOwnselectedItem.GetValue("ID").ToString());
                             temp.IDCampaign = Int64.Parse(cmbcmbCampaignselectedItem.GetValue("CampaignID").ToString());
-                            temp.TimeSchedule = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
+                            temp.TimeSchedule = mdtSchedule;
+                            temp.IDUser = mGlobal.UserID;
+                            temp.JobName = jobName;
+                            temp.JobGroup = groupJobName;
                             db.TempScheduleSendEmails.Add(temp);
                             db.SaveChanges();
                         }
@@ -62,6 +76,42 @@ namespace SendMail
 
                 }
             }
+            
+            //call service schedule email
+            SendMailService proxy = new SendMailService();
+            proxy.SendEmailSchedule(jobName, groupJobName, triggerName, triggerGroup, mdtSchedule);
+
+
+        }
+
+        private void setupSchedule(string jobName, string groupJob, string triggerName, string triggerGroup)
+        {
+            DateTime date = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
+
+            // Grab the Scheduler instance from the Factory 
+            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+
+            // and start it off
+            scheduler.Start();
+
+            // define the job and tie it to our HelloJob class
+            IJobDetail job = JobBuilder.Create<SendEmailJob>()
+                .WithIdentity(jobName, groupJob)
+                .Build();
+
+            // trigger builder creates simple trigger by default, actually an ITrigger is returned
+            
+            ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
+            .WithIdentity(triggerName, triggerGroup)
+            .StartAt(date) // some Date 
+            .ForJob(jobName, groupJob) // identify job with name, group strings
+            .Build();
+
+            // Tell quartz to schedule the job using our trigger
+            scheduler.ScheduleJob(job, trigger);
+
+            // and last shut down the scheduler when you are ready to close your program
+            //scheduler.Shutdown();
         }
 
         #endregion
@@ -256,31 +306,9 @@ namespace SendMail
             try
             {
                 saveTempScheduleSendEmail();
-                DateTime date = DateTime.Parse(Request.Form[txt_date_schedule.UniqueID]);
-
-                // Grab the Scheduler instance from the Factory 
-                IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
-
-                // and start it off
-                scheduler.Start();
-
-                // define the job and tie it to our HelloJob class
-                IJobDetail job = JobBuilder.Create<SendEmailJob>()
-                    .WithIdentity("job1", "group1")
-                    .Build();
-
-                // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                .WithIdentity("trigger1", "group1")
-                .StartAt(date) // some Date 
-                .ForJob("job1", "group1") // identify job with name, group strings
-                .Build();
-
-                // Tell quartz to schedule the job using our trigger
-                scheduler.ScheduleJob(job, trigger);
-
-                // and last shut down the scheduler when you are ready to close your program
-                //scheduler.Shutdown();
+                
+                //JobKey jobkey = new JobKey(jobName, groupJobName);
+                //setupSchedule(jobName, groupJobName, triggerName, triggerGroup);
             }
             catch (Exception)
             {
@@ -301,18 +329,6 @@ namespace SendMail
                 Debugger.Log(1, "Send Mail", "Failed: " + v_e);
             }
         }
-
-        public class SendEmailJob : IJob
-        {
-            public void Execute(IJobExecutionContext context)
-            {
-                SendMailService proxy = new SendMailService();
-                proxy.SendEmailSchedule();
-            }
-        }
-
-        #endregion
-
 
         protected void gridView_RowInserted(object sender, DevExpress.Web.Data.ASPxDataInsertedEventArgs e)
         {
@@ -335,6 +351,39 @@ namespace SendMail
                 throw;
             }
         }
+
+        protected void btnStopSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string jobName = "Job" + mGlobal.AccountName + CampaignName + mdtSchedule;
+                string groupJobName = "GroupJob" + mGlobal.AccountName;
+
+                SendMailService proxy = new SendMailService();
+                proxy.stopSchedule(jobName, groupJobName);
+
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "Bạn đã hủy lịch cho chiến dịch này" + "');", true);
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Ijob
+        public class SendEmailJob : IJob
+        {
+            public void Execute(IJobExecutionContext context)
+            {
+                //SendMailService proxy = new SendMailService();
+                //proxy.SendEmailSchedule();
+            }
+        }
+        #endregion
 
     }
 }

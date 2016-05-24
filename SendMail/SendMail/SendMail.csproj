@@ -483,6 +483,7 @@
     <Compile Include="Util\Cryption.cs" />
     <Compile Include="Util\HandleException.cs" />
     <Compile Include="Util\ImportExcel.cs" />
+    <Compile Include="Util\mSchedule.cs" />
     <Compile Include="Util\TempHtmlReader.cs" />
     <Compile Include="Util\Global.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">

@@ -62,11 +62,11 @@
                 button: ".next()"
             });
         });
-        $(function () {
-            var newYear = new Date()
-            newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
-            $('#defaultCountdown').countdown({ until: newYear });
-        });
+        //$(function () {
+        //    var newYear = new Date()
+        //    newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
+        //    $('#defaultCountdown').countdown({ until: newYear });
+        //});
     </script>
 
     <div style="margin: auto; width: 100%">
@@ -123,7 +123,7 @@
                         </div>
                     </td>
                     <td>
-                        <div id="defaultCountdown"></div>
+                       <%-- <div id="defaultCountdown"></div>--%>
                     </td>
                 </tr>
                 <tr>
@@ -178,7 +178,7 @@
 
                         </div>
                         <asp:Button ID="btnSchedule" class="btnSchedule btn btn-success btn-sm schedule" runat="server" Text="Bắt đầu" OnClick="btnSchedule_Click" />
-
+                        <asp:Button ID="btnStopSchedule" class="btn btn-danger btn-sm schedule" runat="server" Text="Dừng" OnClick="btnStopSchedule_Click" />
                     </td>
                 </tr>
             </table>

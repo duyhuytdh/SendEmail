@@ -23,5 +23,7 @@ namespace SendMail.Models
         public Nullable<System.DateTime> TimeSchedule { get; set; }
         public Nullable<long> IDCampaign { get; set; }
         public Nullable<long> IDUser { get; set; }
+        public string JobName { get; set; }
+        public string JobGroup { get; set; }
     }
 }
